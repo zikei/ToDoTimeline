@@ -24,7 +24,7 @@ class ToDoControllerTests {
 
 
     @Test
-    fun `todo page redirects to login`() {
+    fun `todo page is success`() {
         mockMvc.get("/todo")
             .andExpect {
                 status { isOk() }
