@@ -4,3 +4,5 @@ html:
   login:
     title: ログイン
     error: ユーザー名またはパスワードが違います。
+  todo:
+    title: ToDo
