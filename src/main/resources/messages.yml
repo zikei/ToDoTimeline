@@ -1,3 +1,6 @@
 html:
   home:
     title: ホーム
+  login:
+    title: ログイン
+    error: ユーザー名またはパスワードが違います。

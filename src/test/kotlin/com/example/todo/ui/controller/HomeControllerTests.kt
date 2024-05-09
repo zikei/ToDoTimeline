@@ -27,6 +27,16 @@ class HomeControllerTests {
         mockMvc.get("/")
             .andExpect {
                 status { isOk() }
+                view { name("home") }
+            }
+    }
+
+    @Test
+    fun `login page is success`() {
+        mockMvc.get("/login")
+            .andExpect {
+                status { isOk() }
+                view { name("login") }
             }
     }
 }

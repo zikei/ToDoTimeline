@@ -11,4 +11,9 @@ class HomeController {
     fun home(): String{
         return "home"
     }
+
+    @GetMapping("/login")
+    fun login(): String{
+        return "login"
+    }
 }
