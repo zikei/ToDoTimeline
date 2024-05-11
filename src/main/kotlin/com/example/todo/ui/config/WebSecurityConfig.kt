@@ -46,7 +46,7 @@ class WebSecurityConfig(@Autowired val userDetailsService: UserDetailsService) {
     }
 }
 
-@Profile("div")
+@Profile("dev")
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfigNoAuth {

@@ -14,10 +14,24 @@ import org.springframework.test.web.servlet.get
 class TodoApplicationTests(@Autowired private val mockMvc: MockMvc) {
 
 	@Test
-	fun contextLoads() {
+	@WithAnonymousUser
+	fun `home page is not protected`() {
+		mockMvc.get("/")
+			.andExpect {
+				status { isOk() }
+			}
 	}
 
 	@Test
+	@WithAnonymousUser
+	fun `login page is not protected`() {
+		mockMvc.get("/login")
+			.andExpect {
+				status { isOk() }
+			}
+	}
+  
+  @Test
 	@WithAnonymousUser
 	fun `todo page redirects to login`() {
 		mockMvc.get("/todo")
@@ -37,5 +51,5 @@ class TodoApplicationTests(@Autowired private val mockMvc: MockMvc) {
 				status { isOk() }
 			}
 	}
-
+  
 }
