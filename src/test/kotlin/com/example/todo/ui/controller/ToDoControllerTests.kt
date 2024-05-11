@@ -22,15 +22,13 @@ class ToDoControllerTests {
         mockMvc = MockMvcBuilders.standaloneSetup(todoController).setViewResolvers(viewResolver).build()
     }
 
-    // TODO: 本来は認証が必要なため認証機能追加時テストを変更
+
     @Test
     fun `todo page is success`() {
         mockMvc.get("/todo")
             .andExpect {
-                status {
-                    status { isOk() }
-                    view { name("todo") }
-                }
+                status { isOk() }
+                view { name("todo") }
             }
     }
 }
