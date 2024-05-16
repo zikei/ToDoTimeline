@@ -1,0 +1,4 @@
+dev:
+  user:
+    name: ${DEV_USER_NAME:dev}
+    pass: ${DEV_USER_PASS:dev}
