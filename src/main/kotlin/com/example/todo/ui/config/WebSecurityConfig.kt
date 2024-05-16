@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.savedrequest.DefaultSavedRequest
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -85,6 +86,10 @@ class DevLoginController(
     @GetMapping("/login")
     fun login(request: HttpServletRequest): String{
         request.login(userName, userPass)
-        return "redirect:/"
+
+        val savedRequest = request.getSession(false)?.getAttribute("SPRING_SECURITY_SAVED_REQUEST") as? DefaultSavedRequest
+        val url = savedRequest?.redirectUrl ?: "/"
+
+        return "redirect:$url"
     }
 }
