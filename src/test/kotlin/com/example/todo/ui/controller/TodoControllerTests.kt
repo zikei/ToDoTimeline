@@ -10,8 +10,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver
 
 
 @SpringBootTest
-class ToDoControllerTests {
-    private val todoController = ToDoController()
+class TodoControllerTests {
+    private val todoController = TodoController()
     private lateinit var mockMvc : MockMvc
 
     @BeforeEach

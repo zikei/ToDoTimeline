@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 /** ToDoコントローラ */
 @RestController
 @RequestMapping("/api/todo")
-class ToDoApiController(
+class TodoApiController(
     @Autowired val todoService: TodoService
 ) {
 

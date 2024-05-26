@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 @RequestMapping("/todo")
-class ToDoController {
+class TodoController {
     @GetMapping
     fun todoHome(): String{
         return "todo"
