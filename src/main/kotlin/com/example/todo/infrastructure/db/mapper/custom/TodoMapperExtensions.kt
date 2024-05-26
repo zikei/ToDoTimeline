@@ -34,12 +34,22 @@ fun TodoMapper.select(): List<TodoRecord> {
     return selectMany(selectStatement)
 }
 
-fun TodoMapper.selectByPrimaryKey(id_: Int): TodoRecord? {
+fun TodoMapper.selectByUserId(id : Int): List<TodoRecord>{
     val selectStatement = select(columnList).from(Task) {
         leftJoin(PTask, "p") {
             on(Task.parentid, equalTo(PTask.taskid))
         }
-        where(Task.taskid, isEqualTo(id_))
+        where(Task.userid, isEqualTo(id))
+    }
+    return selectMany(selectStatement)
+}
+
+fun TodoMapper.selectByPrimaryKey(id: Int): TodoRecord? {
+    val selectStatement = select(columnList).from(Task) {
+        leftJoin(PTask, "p") {
+            on(Task.parentid, equalTo(PTask.taskid))
+        }
+        where(Task.taskid, isEqualTo(id))
     }
     return selectOne(selectStatement)
 }
