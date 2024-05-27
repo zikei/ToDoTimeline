@@ -20,7 +20,7 @@ CREATE TABLE task (
  userId INT NOT NULL,
  taskName VARCHAR(128) NOT NULL,
  createDate DATE NOT NULL,
- severity ENUM('urgent', 'high', 'normal', 'low', 'none'),
+ severity ENUM('urgent', 'high', 'normal', 'low', 'none') NOT NULL,
  deadline DATE,
  taskStatus ENUM('open', 'closed', 'cancel') NOT NULL,
  parentId INT,

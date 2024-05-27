@@ -14,7 +14,7 @@ data class TodoInfo(
     val userId: Int,
     val taskName: String,
     val createDate: LocalDate,
-    val severity: Severity?,
+    val severity: Severity,
     val deadline: LocalDate?,
     val taskStatus: TaskStatus,
     val parentId: Int?,

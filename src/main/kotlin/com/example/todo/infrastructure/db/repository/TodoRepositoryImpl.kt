@@ -22,7 +22,7 @@ class TodoRepositoryImpl(
                 record.puserid!!,
                 record.ptaskname!!,
                 record.pcreatedate!!,
-                record.pseverity,
+                record.pseverity!!,
                 record.pdeadline,
                 record.ptaskstatus!!,
                 null
@@ -34,7 +34,7 @@ class TodoRepositoryImpl(
             record.userid!!,
             record.taskname!!,
             record.createdate!!,
-            record.severity,
+            record.severity!!,
             record.deadline,
             record.taskstatus!!,
             ptodo
