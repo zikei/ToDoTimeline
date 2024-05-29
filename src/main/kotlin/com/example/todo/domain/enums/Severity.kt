@@ -8,6 +8,10 @@ package com.example.todo.domain.enums
  * low:低い
  * none:なし
  */
-enum class Severity {
-    urgent, high, normal, low, none
+enum class Severity(val severity:String, val severityName: String) {
+    urgent("urgent", "緊急"),
+    high("high", "高"),
+    normal("normal", "中"),
+    low("low", "低"),
+    none("none", "なし")
 }

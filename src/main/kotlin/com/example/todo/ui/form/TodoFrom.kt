@@ -1,6 +1,5 @@
 package com.example.todo.ui.form
 
-import com.example.todo.domain.enums.Severity
 import com.example.todo.domain.enums.TaskStatus
 import com.example.todo.domain.model.Todo
 import java.time.LocalDate
@@ -14,12 +13,12 @@ data class TodoInfo(
     val userId: Int,
     val taskName: String,
     val createDate: LocalDate,
-    val severity: Severity,
+    val severity: String,
     val deadline: LocalDate?,
     val taskStatus: TaskStatus,
     val parentId: Int?,
     val parentName: String?
 ){
-    constructor(todo: Todo): this(todo.taskId, todo.userId, todo.taskName, todo.createDate, todo.severity,
+    constructor(todo: Todo): this(todo.taskId, todo.userId, todo.taskName, todo.createDate, todo.severity.severityName,
         todo.deadline, todo.taskStatus, todo.parent?.taskId, todo.parent?.taskName)
 }
