@@ -3,6 +3,7 @@ package com.example.todo.infrastructure.db.repository
 import com.example.todo.domain.model.Todo
 import com.example.todo.domain.repository.TodoRepository
 import com.example.todo.infrastructure.db.mapper.custom.TodoMapper
+import com.example.todo.infrastructure.db.mapper.custom.selectByPrimaryKey
 import com.example.todo.infrastructure.db.mapper.custom.selectByUserId
 import com.example.todo.infrastructure.db.record.custom.TodoRecord
 import org.springframework.stereotype.Repository
@@ -11,6 +12,10 @@ import org.springframework.stereotype.Repository
 class TodoRepositoryImpl(
     private val todoMapper: TodoMapper
 ): TodoRepository {
+    override fun findById(taskId: Int): Todo? {
+        return todoMapper.selectByPrimaryKey(taskId)?.let { toModel(it) }
+    }
+
     override fun findListByUserId(userId: Int): List<Todo> {
         return todoMapper.selectByUserId(userId).map { toModel(it) }
     }

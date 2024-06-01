@@ -6,3 +6,5 @@ html:
     error: ユーザー名またはパスワードが違います。
   todo:
     title: ToDo
+    detail:
+      title: ToDo詳細

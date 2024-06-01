@@ -14,4 +14,8 @@ class TodoServiceImpl(
     override fun getList(userId: Int): List<Todo> {
         return todoRepo.findListByUserId(userId)
     }
+
+    override fun getTodo(taskId: Int): Todo? {
+        return todoRepo.findById(taskId)
+    }
 }
