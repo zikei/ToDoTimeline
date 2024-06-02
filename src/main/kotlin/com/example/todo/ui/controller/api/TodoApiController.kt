@@ -1,18 +1,20 @@
 package com.example.todo.ui.controller.api
 
+import com.example.todo.domain.enums.Severity
+import com.example.todo.domain.enums.TaskStatus
 import com.example.todo.domain.exception.AccessDeniedException
 import com.example.todo.domain.exception.NotFoundException
 import com.example.todo.domain.model.Login
+import com.example.todo.domain.model.Task
 import com.example.todo.domain.service.TodoService
 import com.example.todo.ui.form.GetTodoDetailResponse
 import com.example.todo.ui.form.GetTodoListResponse
+import com.example.todo.ui.form.RegisterTaskRequest
 import com.example.todo.ui.form.TodoInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
 
 /** ToDoコントローラ */
 @RestController
@@ -32,7 +34,7 @@ class TodoApiController(
 
     /** ToDo詳細取得 */
     @GetMapping("/detail/{taskId}")
-    fun todoDetail(@PathVariable("taskId") taskId: Int, @AuthenticationPrincipal loginUser: Login) : GetTodoDetailResponse {
+    fun getDetail(@PathVariable("taskId") taskId: Int, @AuthenticationPrincipal loginUser: Login) : GetTodoDetailResponse {
         val todo = todoService.getTodo(taskId)?.let{
             TodoInfo(it)
         }
@@ -43,4 +45,22 @@ class TodoApiController(
 
         return GetTodoDetailResponse(todo)
     }
+    
+    /** Taskの登録 */
+    @PostMapping("/new")
+    fun create(@RequestBody req: RegisterTaskRequest, @AuthenticationPrincipal loginUser: Login){
+        todoService.create(
+            Task(
+                null,
+                loginUser.user.userId,
+                req.taskName,
+                LocalDate.now(),
+                Severity.getSeverity(req.severity),
+                req.deadline,
+                TaskStatus.open,
+                req.parentId
+            )
+        )
+    }
+
 }

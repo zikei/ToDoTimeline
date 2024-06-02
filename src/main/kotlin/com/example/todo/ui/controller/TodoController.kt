@@ -11,14 +11,20 @@ import org.springframework.web.bind.annotation.RequestMapping
 class TodoController {
     /** Todo一覧ページ */
     @GetMapping
-    fun todoHome(): String{
+    fun todoHome(): String {
         return "todo"
     }
 
     /** Todo詳細 */
     @GetMapping("/detail/{taskId}")
-    fun todoDetail(@PathVariable("taskId") taskId: Int, model: Model): String{
+    fun todoDetail(@PathVariable("taskId") taskId: Int, model: Model): String {
         model.addAttribute("taskId", taskId)
         return "todoDetail"
+    }
+
+    /** Todo作成 */
+    @GetMapping("/new")
+    fun todoCreate(): String {
+        return "todoCreate"
     }
 }

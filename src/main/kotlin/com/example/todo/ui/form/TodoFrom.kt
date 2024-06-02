@@ -10,6 +10,14 @@ data class GetTodoListResponse(val todoList: List<TodoInfo>)
 /** Todo詳細返却 */
 data class GetTodoDetailResponse(val todo: TodoInfo)
 
+/** Task登録要求 */
+data class RegisterTaskRequest(
+    val taskName: String,
+    val severity: String,
+    val deadline: LocalDate?,
+    val parentId: Int?,
+)
+
 
 /** ToDo情報 */
 data class TodoInfo(

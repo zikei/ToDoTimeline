@@ -1,5 +1,6 @@
 package com.example.todo.app.service
 
+import com.example.todo.domain.model.Task
 import com.example.todo.domain.model.Todo
 import com.example.todo.domain.repository.TodoRepository
 import com.example.todo.domain.service.TodoService
@@ -17,5 +18,9 @@ class TodoServiceImpl(
 
     override fun getTodo(taskId: Int): Todo? {
         return todoRepo.findById(taskId)
+    }
+
+    override fun create(task: Task) {
+        todoRepo.create(task)
     }
 }

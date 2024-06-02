@@ -13,5 +13,11 @@ enum class Severity(val severity:String, val severityName: String) {
     high("high", "高"),
     normal("normal", "中"),
     low("low", "低"),
-    none("none", "なし")
+    none("none", "なし");
+
+    companion object {
+        fun getSeverity(key: String): Severity{
+            return entries.find { it.severity == key } ?: none
+        }
+    }
 }
