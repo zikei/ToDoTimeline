@@ -11,6 +11,7 @@ data class TaskRecord(
     var taskid: Int? = null,
     var userid: Int? = null,
     var taskname: String? = null,
+    var memo: String? = null,
     var createdate: LocalDate? = null,
     var severity: Severity? = null,
     var deadline: LocalDate? = null,

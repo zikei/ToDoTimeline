@@ -44,6 +44,7 @@ interface TaskMapper {
         Result(column="taskId", property="taskid", jdbcType=JdbcType.INTEGER, id=true),
         Result(column="userId", property="userid", jdbcType=JdbcType.INTEGER),
         Result(column="taskName", property="taskname", jdbcType=JdbcType.VARCHAR),
+        Result(column="memo", property="memo", jdbcType=JdbcType.VARCHAR),
         Result(column="createDate", property="createdate", jdbcType=JdbcType.DATE),
         Result(column="severity", property="severity", typeHandler=EnumTypeHandler::class, jdbcType=JdbcType.CHAR),
         Result(column="deadline", property="deadline", jdbcType=JdbcType.DATE),

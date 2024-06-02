@@ -5,7 +5,7 @@
 <generatorConfiguration>
     <!-- mysql connectorのパス -->
     <classPathEntry
-            location="{mysql connector}" />
+            location="{mysql connector}"/>
     <context id="MySQLTables" targetRuntime="MyBatis3Kotlin">
         <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
         <commentGenerator>
