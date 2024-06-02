@@ -19,6 +19,7 @@ CREATE TABLE task (
  taskId INT auto_increment,
  userId INT NOT NULL,
  taskName VARCHAR(128) NOT NULL,
+ memo VARCHAR(512),
  createDate DATE NOT NULL,
  severity ENUM('urgent', 'high', 'normal', 'low', 'none'),
  deadline DATE,
