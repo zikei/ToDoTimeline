@@ -9,6 +9,7 @@ data class Task(
     val taskId: Int?,
     val userId: Int,
     val taskName: String,
+    val memo: String?,
     val createDate: LocalDate,
     val severity: Severity,
     val deadline: LocalDate?,

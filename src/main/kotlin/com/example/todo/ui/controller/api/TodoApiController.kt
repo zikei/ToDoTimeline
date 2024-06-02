@@ -54,6 +54,7 @@ class TodoApiController(
                 null,
                 loginUser.user.userId,
                 req.taskName,
+                req.memo,
                 LocalDate.now(),
                 Severity.getSeverity(req.severity),
                 req.deadline,

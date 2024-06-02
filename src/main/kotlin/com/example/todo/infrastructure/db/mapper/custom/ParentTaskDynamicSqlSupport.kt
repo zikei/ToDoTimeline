@@ -14,6 +14,8 @@ object ParentTaskDynamicSqlSupport {
 
         val taskname = column<String>("taskName", JDBCType.VARCHAR)
 
+        val memo = column<String>("memo", JDBCType.VARCHAR)
+
         val createdate = column<LocalDate>("createDate", JDBCType.DATE)
 
         val severity = column<Severity>("severity", JDBCType.CHAR, "org.apache.ibatis.type.EnumTypeHandler")

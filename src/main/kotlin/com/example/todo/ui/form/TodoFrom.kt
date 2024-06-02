@@ -13,6 +13,7 @@ data class GetTodoDetailResponse(val todo: TodoInfo)
 /** Task登録要求 */
 data class RegisterTaskRequest(
     val taskName: String,
+    val memo: String,
     val severity: String,
     val deadline: LocalDate?,
     val parentId: Int?,
@@ -30,14 +31,16 @@ data class TodoInfo(
     val taskStatus: TaskStatusResponse,
     val parentId: Int?,
     val parentName: String?
-){
-    constructor(todo: Todo): this(todo.taskId, todo.userId, todo.taskName, todo.createDate, todo.severity.severityName,
-        todo.deadline, TaskStatusResponse(todo.taskStatus), todo.parent?.taskId, todo.parent?.taskName)
+) {
+    constructor(todo: Todo) : this(
+        todo.taskId, todo.userId, todo.taskName, todo.createDate, todo.severity.severityName,
+        todo.deadline, TaskStatusResponse(todo.taskStatus), todo.parent?.taskId, todo.parent?.taskName
+    )
 }
 
 data class TaskStatusResponse(
     val status: String,
     val statusName: String
-){
-    constructor(taskStatus: TaskStatus): this(taskStatus.status, taskStatus.statusName)
+) {
+    constructor(taskStatus: TaskStatus) : this(taskStatus.status, taskStatus.statusName)
 }
