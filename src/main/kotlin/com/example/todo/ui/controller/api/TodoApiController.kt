@@ -86,6 +86,6 @@ class TodoApiController(
             )
         )
 
-        response.sendRedirect("/todo/detail/$taskId")
+        response.setHeader("hx-redirect", "/todo/detail/$taskId")
     }
 }
