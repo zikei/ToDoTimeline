@@ -11,6 +11,9 @@ interface TodoService {
     /** Todoの取得 */
     fun getTodo(taskId: Int): Todo?
 
-    /** Todoの登録 */
-    fun create(task: Task)
+    /**
+     * Todoの登録
+     * @return 登録ID
+     */
+    fun create(task: Task): Int
 }

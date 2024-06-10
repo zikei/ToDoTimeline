@@ -14,8 +14,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class TodoRepositoryImpl(
-    private val todoMapper: TodoMapper,
-    private val taskMapper: TaskMapper
+    private val todoMapper: TodoMapper, private val taskMapper: TaskMapper
 ) : TodoRepository {
     override fun findById(taskId: Int): Todo? {
         return todoMapper.selectByPrimaryKey(taskId)?.let { toModel(it) }
@@ -25,8 +24,10 @@ class TodoRepositoryImpl(
         return todoMapper.selectByUserId(userId).map { toModel(it) }
     }
 
-    override fun create(task: Task) {
-        taskMapper.insert(toRecord(task))
+    override fun create(task: Task): Int {
+        val taskRecord = toRecord(task)
+        taskMapper.insert(taskRecord)
+        return taskRecord.taskid!!
     }
 
     /** TodoレコードをTodoモデルに変換 */

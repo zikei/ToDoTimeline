@@ -20,7 +20,7 @@ class TodoServiceImpl(
         return todoRepo.findById(taskId)
     }
 
-    override fun create(task: Task) {
-        todoRepo.create(task)
+    override fun create(task: Task): Int {
+        return todoRepo.create(task)
     }
 }

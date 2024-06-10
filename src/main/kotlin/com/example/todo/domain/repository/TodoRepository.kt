@@ -11,6 +11,9 @@ interface TodoRepository {
     /** ユーザIDからユーザのTodoのListを取得 */
     fun findListByUserId(userId: Int): List<Todo>
 
-    /** Task登録 */
-    fun create(task: Task)
+    /**
+     * Task登録
+     * @return 登録ID
+     */
+    fun create(task: Task): Int
 }
