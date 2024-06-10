@@ -6,6 +6,7 @@ html:
     title: ホーム
   login:
     title: ログイン
+    submit: ログイン
     error: ユーザー名またはパスワードが違います。
   todo:
     title: Todo
@@ -14,6 +15,10 @@ html:
     create:
       title: 新規Todo
       submit: Todo作成
+
+login:
+  userName: ユーザ名
+  password: パスワード
 
 todo:
   taskName: タスク名

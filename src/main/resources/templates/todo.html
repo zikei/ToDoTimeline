@@ -43,22 +43,22 @@
                                 <div class="col">
                                     <div class="row">
                                         <div class="col-3">
-                                            <p>作成日：{{createDate}}</p>
+                                            <p>[[#{todo.createDate}]]：{{createDate}}</p>
                                         </div>
                                         <div class="col-3">
-                                            <p>期限：
+                                            <p>[[#{todo.deadline}]]：
                                                 {{#deadline}} {{deadline}} {{/deadline}}
-                                                {{^deadline}} 未設定 {{/deadline}}
+                                                {{^deadline}} [[#{todo.notSet}]] {{/deadline}}
                                             </p>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-3">
-                                            <p>重要度：{{severity}}</p>
+                                            <p>[[#{todo.severity}]]：{{severity}}</p>
                                         </div>
                                         <div class="col-3">
                                             {{#parentId}}
-                                            <p>親タスク名：{{parentName}}</p>
+                                            <p>[[#{todo.parent}]]：{{parentName}}</p>
                                             {{/parentId}}
                                         </div>
                                     </div>
