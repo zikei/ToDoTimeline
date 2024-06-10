@@ -13,19 +13,19 @@
     <script src="https://unpkg.com/mustache@latest"></script>
 </head>
 <body>
-<dev id="todoDetail">
+<div id="todoDetail">
     <h1 th:text="#{html.todo.detail.title}">ToDo</h1>
-</dev>
+</div>
 
 
 <div hx-ext="client-side-templates" th:hx-get="|/api/todo/detail/${taskId}|" hx-trigger="load"
      hx-target="#todoDetail" mustache-template="TodoTemplate">
     <template id="TodoTemplate">
         {{#todo}}
-        <h1>{{taskName}}</h1>
         <div class="row">
             <div class="col-1"></div>
-            <div id="todoDetail" class="col">
+            <div class="col">
+                <h1>{{taskName}}</h1>
                 <div class="card">
                     <div class="row">
                         <div class="col-1">
@@ -56,9 +56,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    {{#memo}}
+                    <div class="card-footer">
                         <p>{{memo}}</p>
                     </div>
+                    {{/memo}}
                 </div>
             </div>
             <div class="col-1"></div>

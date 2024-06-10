@@ -27,8 +27,8 @@ class WebSecurityConfig(@Autowired val userDetailsService: UserDetailsService) {
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain? {
-        http{
-            authorizeHttpRequests{
+        http {
+            authorizeHttpRequests {
                 authorize(PathRequest.toStaticResources().atCommonLocations(), permitAll)
                 authorize("/", permitAll)
                 authorize(anyRequest, authenticated)
@@ -41,6 +41,10 @@ class WebSecurityConfig(@Autowired val userDetailsService: UserDetailsService) {
             logout {
                 logoutUrl = "/logout"
                 logoutSuccessUrl = "/"
+            }
+            csrf {
+                // TODO:CSRFの設定
+                disable()
             }
         }
         return http.build()
@@ -58,13 +62,16 @@ class WebSecurityConfig(@Autowired val userDetailsService: UserDetailsService) {
 class WebSecurityConfigNoAuth(@Autowired val userDetailsService: UserDetailsService) {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain? {
-        http{
-            authorizeHttpRequests{
+        http {
+            authorizeHttpRequests {
                 authorize(anyRequest, authenticated)
             }
             formLogin {
                 loginPage = "/dev/login"
                 permitAll = true
+            }
+            csrf {
+                disable()
             }
         }
         return http.build()
@@ -82,12 +89,13 @@ class WebSecurityConfigNoAuth(@Autowired val userDetailsService: UserDetailsServ
 class DevLoginController(
     @Value("\${dev.user.name}") private val userName: String,
     @Value("\${dev.user.pass}") private val userPass: String
-){
+) {
     @GetMapping("/login")
-    fun login(request: HttpServletRequest): String{
+    fun login(request: HttpServletRequest): String {
         request.login(userName, userPass)
 
-        val savedRequest = request.getSession(false)?.getAttribute("SPRING_SECURITY_SAVED_REQUEST") as? DefaultSavedRequest
+        val savedRequest =
+            request.getSession(false)?.getAttribute("SPRING_SECURITY_SAVED_REQUEST") as? DefaultSavedRequest
         val url = savedRequest?.redirectUrl ?: "/"
 
         return "redirect:$url"

@@ -18,48 +18,57 @@
 
 <div class="row">
     <div class="col-1"></div>
-    <div id="todoList" class="col">
-        <div hx-ext="client-side-templates" hx-get="/api/todo/list" hx-trigger="load"
-             hx-target="#todoList" mustache-array-template="TodoListTemplate">
-            <template id="TodoListTemplate">
-                {{#data.todoList}}
-                <div class="card hover-gray">
-                    <a href="/todo/detail/{{taskId}}" class="stretched-link"></a>
-                    <div class="row">
-                        <div class="col-1">
-                            <img class="img-thumbnail"
-                                 src="/img/{{taskStatus.status}}.svg" alt="{{taskStatus.statusName}}"/>
-                        </div>
-                        <div class="col-3">
-                            <h4>{{taskName}}</h4>
-                        </div>
-                        <div class="col">
+    <div class="col">
+        <div class="row text-end pb-3">
+            <div class="col">
+                <a href="/todo/new" class="btn btn-primary" th:text="#{html.todo.create.title}">新規TODO</a>
+            </div>
+        </div>
+        <div class="row">
+            <div id="todoList" class="col">
+                <div hx-ext="client-side-templates" hx-get="/api/todo/list" hx-trigger="load"
+                     hx-target="#todoList" mustache-array-template="TodoListTemplate">
+                    <template id="TodoListTemplate">
+                        {{#data.todoList}}
+                        <div class="card hover-gray">
+                            <a href="/todo/detail/{{taskId}}" class="stretched-link"></a>
                             <div class="row">
-                                <div class="col-3">
-                                    <p>作成日：{{createDate}}</p>
+                                <div class="col-1">
+                                    <img class="img-thumbnail"
+                                         src="/img/{{taskStatus.status}}.svg" alt="{{taskStatus.statusName}}"/>
                                 </div>
                                 <div class="col-3">
-                                        <p>期限：
-                                            {{#deadline}} {{deadline}} {{/deadline}}
-                                            {{^deadline}} 未設定 {{/deadline}}
-                                        </p>
+                                    <h4>{{taskName}}</h4>
+                                </div>
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <p>作成日：{{createDate}}</p>
+                                        </div>
+                                        <div class="col-3">
+                                            <p>期限：
+                                                {{#deadline}} {{deadline}} {{/deadline}}
+                                                {{^deadline}} 未設定 {{/deadline}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <p>重要度：{{severity}}</p>
+                                        </div>
+                                        <div class="col-3">
+                                            {{#parentId}}
+                                            <p>親タスク名：{{parentName}}</p>
+                                            {{/parentId}}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-3">
-                                    <p>重要度：{{severity}}</p>
-                                </div>
-                                <div class="col-3">
-                                    {{#parentId}}
-                                    <p>親タスク名：{{parentName}}</p>
-                                    {{/parentId}}
-                                </div>
-                            </div>
                         </div>
-                    </div>
+                        {{/data.todoList}}
+                    </template>
                 </div>
-                {{/data.todoList}}
-            </template>
+            </div>
         </div>
     </div>
     <div class="col-1"></div>

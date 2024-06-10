@@ -1,14 +1,26 @@
 package com.example.todo.ui.controller
 
+import com.example.todo.domain.enums.Severity
+import com.example.todo.domain.exception.AccessDeniedException
+import com.example.todo.domain.model.Login
+import com.example.todo.domain.service.TodoService
+import com.example.todo.ui.form.RegisterTaskRequest
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/todo")
-class TodoController {
+class TodoController(
+    @Autowired private val todoService: TodoService
+) {
+    @ModelAttribute
+    fun setUpRegisterTaskRequest(): RegisterTaskRequest {
+        return RegisterTaskRequest()
+    }
+
     /** Todo一覧ページ */
     @GetMapping
     fun todoHome(): String {
@@ -24,7 +36,22 @@ class TodoController {
 
     /** Todo作成 */
     @GetMapping("/new")
-    fun todoCreate(): String {
+    fun todoCreate(
+        model: Model,
+        @AuthenticationPrincipal loginUser: Login,
+        @RequestParam(required = false) pid: Int? = null
+    ): String {
+        pid?.let {
+            val task = todoService.getTodo(it)
+            if (task == null || task.userId != loginUser.user.userId) {
+                throw AccessDeniedException()
+            }
+            model.addAttribute("ptask", task)
+        }
+
+        val severityList = Severity.entries.toTypedArray()
+        model.addAttribute("severityList", severityList)
+
         return "todoCreate"
     }
 }
