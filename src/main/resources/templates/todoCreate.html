@@ -11,7 +11,7 @@
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/client-side-templates.js"></script>
     <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
-    <script src="https://unpkg.com/mustache@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 </head>
 <body>
 <h1 th:text="#{html.todo.create.title}">Todo register</h1>
@@ -65,7 +65,7 @@
                 </label>
                 <select class="form-control" id="parentId" th:field="*{parentId}" hx-ext="client-side-templates"
                         hx-get="/api/todo/list" hx-trigger="load"
-                        hx-target="#parentId" mustache-array-template="OptTodoListTemplate">
+                        hx-target="#parentId" handlebars-array-template="OptTodoListTemplate">
                     <template id="OptTodoListTemplate">
                         <th:block th:if="${ptask != null}">
                             <option selected th:value="${ptask.taskId}">
@@ -80,21 +80,20 @@
                         <th:block th:if="${ptask == null}">
                             <option value="" selected> - </option>
                         </th:block>
-                        {{#data.todoList}}
+                        {{#each todoList}}
                         <option value="{{taskId}}">
                             <p>{{taskName}}</p>
                             <p>[[#{todo.taskStatus}]]：{{taskStatus.statusName}}</p>
                             <p>[[#{todo.createDate}]]：{{createDate}}</p>
                             <p>[[#{todo.deadline}]]：
-                                {{#deadline}} {{deadline}} {{/deadline}}
-                                {{^deadline}} [[#{todo.notSet}]] {{/deadline}}
+                                {{#if deadline}} {{deadline}} {{else}} [[#{todo.notSet}]] {{/if}}
                             </p>
                             <p>[[#{todo.severity}]]：{{severity}}</p>
-                            {{#parentId}}
+                            {{#if parentId}}
                             <p>[[#{todo.parent}]]：{{parentName}}</p>
-                            {{/parentId}}
+                            {{/if}}
                         </option>
-                        {{/data.todoList}}
+                        {{/each}}
                     </template>
                 </select>
             </div>

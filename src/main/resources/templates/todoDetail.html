@@ -10,7 +10,7 @@
 
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/client-side-templates.js"></script>
-    <script src="https://unpkg.com/mustache@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 </head>
 <body>
 <div id="todoDetail">
@@ -19,8 +19,9 @@
 
 
 <div hx-ext="client-side-templates" th:hx-get="|/api/todo/detail/${taskId}|" hx-trigger="load"
-     hx-target="#todoDetail" mustache-template="TodoTemplate">
+     hx-target="#todoDetail" handlebars-template="TodoTemplate">
     <template id="TodoTemplate">
+        {{#if todo}}
         {{#todo}}
         <div class="row">
             <div class="col-1"></div>
@@ -39,8 +40,7 @@
                                 </div>
                                 <div class="col-3">
                                     <p>[[#{todo.deadline}]]：
-                                        {{#deadline}} {{deadline}} {{/deadline}}
-                                        {{^deadline}} [[#{todo.notSet}]] {{/deadline}}
+                                        {{#if deadline}} {{deadline}} {{else}} [[#{todo.notSet}]] {{/if}}
                                     </p>
                                 </div>
                             </div>
@@ -49,23 +49,24 @@
                                     <p>[[#{todo.severity}]]：{{severity}}</p>
                                 </div>
                                 <div class="col-3">
-                                    {{#parentId}}
+                                    {{#if parentId}}
                                     <a href="/todo/detail/{{parentId}}">[[#{todo.parent}]]：{{parentName}}</a>
-                                    {{/parentId}}
+                                    {{/if}}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {{#memo}}
+                    {{#if memo}}
                     <div class="card-footer">
                         <p>{{memo}}</p>
                     </div>
-                    {{/memo}}
+                    {{/if}}
                 </div>
             </div>
             <div class="col-1"></div>
         </div>
         {{/todo}}
+        {{/if}}
     </template>
 </div>
 

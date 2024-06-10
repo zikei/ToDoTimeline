@@ -11,7 +11,7 @@
 
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/client-side-templates.js"></script>
-    <script src="https://unpkg.com/mustache@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 </head>
 <body>
 <h1 th:text="#{html.todo.title}">ToDo</h1>
@@ -27,9 +27,9 @@
         <div class="row">
             <div id="todoList" class="col">
                 <div hx-ext="client-side-templates" hx-get="/api/todo/list" hx-trigger="load"
-                     hx-target="#todoList" mustache-array-template="TodoListTemplate">
+                     hx-target="#todoList" handlebars-array-template="TodoListTemplate">
                     <template id="TodoListTemplate">
-                        {{#data.todoList}}
+                        {{#each todoList}}
                         <div class="card hover-gray">
                             <a href="/todo/detail/{{taskId}}" class="stretched-link"></a>
                             <div class="row">
@@ -47,8 +47,7 @@
                                         </div>
                                         <div class="col-3">
                                             <p>[[#{todo.deadline}]]：
-                                                {{#deadline}} {{deadline}} {{/deadline}}
-                                                {{^deadline}} [[#{todo.notSet}]] {{/deadline}}
+                                                {{#if deadline}} {{deadline}} {{else}} [[#{todo.notSet}]] {{/if}}
                                             </p>
                                         </div>
                                     </div>
@@ -57,15 +56,15 @@
                                             <p>[[#{todo.severity}]]：{{severity}}</p>
                                         </div>
                                         <div class="col-3">
-                                            {{#parentId}}
+                                            {{#if parentId}}
                                             <p>[[#{todo.parent}]]：{{parentName}}</p>
-                                            {{/parentId}}
+                                            {{/if}}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{/data.todoList}}
+                        {{/each}}
                     </template>
                 </div>
             </div>
