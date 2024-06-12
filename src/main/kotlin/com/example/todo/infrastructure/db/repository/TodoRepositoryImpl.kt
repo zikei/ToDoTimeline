@@ -1,5 +1,6 @@
 package com.example.todo.infrastructure.db.repository
 
+import com.example.todo.domain.enums.TaskStatus
 import com.example.todo.domain.model.Task
 import com.example.todo.domain.model.Todo
 import com.example.todo.domain.repository.TodoRepository
@@ -8,6 +9,7 @@ import com.example.todo.infrastructure.db.mapper.custom.TodoMapper
 import com.example.todo.infrastructure.db.mapper.custom.selectByPrimaryKey
 import com.example.todo.infrastructure.db.mapper.custom.selectByUserId
 import com.example.todo.infrastructure.db.mapper.insert
+import com.example.todo.infrastructure.db.mapper.updateByPrimaryKeySelective
 import com.example.todo.infrastructure.db.record.TaskRecord
 import com.example.todo.infrastructure.db.record.custom.TodoRecord
 import org.springframework.stereotype.Repository
@@ -28,6 +30,14 @@ class TodoRepositoryImpl(
         val taskRecord = toRecord(task)
         taskMapper.insert(taskRecord)
         return taskRecord.taskid!!
+    }
+
+    override fun updTaskStatus(taskId: Int, taskStatus: TaskStatus) {
+        val taskRecord = TaskRecord()
+        taskRecord.taskid = taskId
+        taskRecord.taskstatus = taskStatus
+
+        taskMapper.updateByPrimaryKeySelective(taskRecord)
     }
 
     /** TodoレコードをTodoモデルに変換 */

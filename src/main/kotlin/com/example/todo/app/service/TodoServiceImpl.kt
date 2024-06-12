@@ -1,5 +1,6 @@
 package com.example.todo.app.service
 
+import com.example.todo.domain.enums.TaskStatus
 import com.example.todo.domain.model.Task
 import com.example.todo.domain.model.Todo
 import com.example.todo.domain.repository.TodoRepository
@@ -22,5 +23,9 @@ class TodoServiceImpl(
 
     override fun create(task: Task): Int {
         return todoRepo.create(task)
+    }
+
+    override fun updTaskStatus(taskId: Int, taskStatus: TaskStatus){
+        todoRepo.updTaskStatus(taskId, taskStatus)
     }
 }

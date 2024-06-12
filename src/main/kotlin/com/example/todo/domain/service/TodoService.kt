@@ -1,5 +1,6 @@
 package com.example.todo.domain.service
 
+import com.example.todo.domain.enums.TaskStatus
 import com.example.todo.domain.model.Task
 import com.example.todo.domain.model.Todo
 
@@ -16,4 +17,7 @@ interface TodoService {
      * @return 登録ID
      */
     fun create(task: Task): Int
+
+    /** タスク状態の更新 */
+    fun updTaskStatus(taskId: Int, taskStatus: TaskStatus)
 }
