@@ -1,10 +1,12 @@
 package com.example.todo.ui.controller
 
 import com.example.todo.domain.enums.Severity
+import com.example.todo.domain.enums.TaskStatus
 import com.example.todo.domain.exception.AccessDeniedException
 import com.example.todo.domain.model.Login
 import com.example.todo.domain.service.TodoService
 import com.example.todo.ui.form.RegisterTaskRequest
+import com.example.todo.ui.form.UpdTaskStatusRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
@@ -21,6 +23,11 @@ class TodoController(
         return RegisterTaskRequest()
     }
 
+    @ModelAttribute
+    fun setUpUpdTaskStatusRequest(): UpdTaskStatusRequest {
+        return UpdTaskStatusRequest()
+    }
+
     /** Todo一覧ページ */
     @GetMapping
     fun todoHome(): String {
@@ -29,7 +36,11 @@ class TodoController(
 
     /** Todo詳細 */
     @GetMapping("/detail/{taskId}")
-    fun todoDetail(@PathVariable("taskId") taskId: Int, model: Model): String {
+    fun todoDetail(@PathVariable("taskId") taskId: Int, model: Model, form: UpdTaskStatusRequest): String {
+        form.taskId = taskId
+
+        val taskStatusList = TaskStatus.entries.toTypedArray()
+        model.addAttribute("taskStatusList", taskStatusList)
         model.addAttribute("taskId", taskId)
         return "todoDetail"
     }

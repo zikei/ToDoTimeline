@@ -10,7 +10,10 @@
 
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/client-side-templates.js"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+    <script src="/js/HandlebarsHelpers.js"></script>
 </head>
 <body>
 <div id="todoDetail">
@@ -32,6 +35,21 @@
                         <div class="col-1">
                             <img class="img-thumbnail"
                                  src="/img/{{taskStatus.status}}.svg" alt="{{taskStatus.statusName}}"/>
+                        </div>
+                        <div class="col-3">
+                            <form hx-put="/api/todo/upd/status" hx-ext='json-enc' hx-trigger="change" th:object="${updTaskStatusRequest}">
+                                <input type="hidden" th:field="*{taskId}">
+                                <span th:text="|#{todo.taskStatus}:|">状態:</span>
+                                <div class="form-check" th:each="taskSts : ${taskStatusList}">
+                                    <!--/* TODO:th:field="*{taskStatus}"を利用する場合checkedが無効化される */-->
+                                    {{#if (eq this.taskStatus.status "[[${taskSts.status}]]")}}
+                                        <input class="form-check-input" type="radio" th:id="|ts_${taskSts.status}|" th:value="${taskSts.status}" name="taskStatus" checked>
+                                    {{else}}
+                                        <input class="form-check-input" type="radio" th:id="|ts_${taskSts.status}|" th:value="${taskSts.status}" name="taskStatus">
+                                    {{/if}}
+                                    <label class="form-check-label" th:for="|ts_${taskSts.status}|" th:text="${taskSts.statusName}">statusName</label>
+                                </div>
+                            </form>
                         </div>
                         <div class="col">
                             <div class="row">

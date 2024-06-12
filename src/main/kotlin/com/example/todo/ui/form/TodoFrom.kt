@@ -27,6 +27,11 @@ data class RegisterTaskRequest(
     constructor() : this(null, null, Severity.none.severity, null, null)
 }
 
+/** Task状態更新要求 */
+data class UpdTaskStatusRequest(var taskId: Int?, var taskStatus: String?) {
+    constructor() : this(null, null)
+}
+
 
 /** ToDo情報 */
 data class TodoInfo(
