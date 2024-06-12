@@ -21,7 +21,7 @@ CREATE TABLE task (
  taskName VARCHAR(128) NOT NULL,
  memo VARCHAR(512),
  createDate DATE NOT NULL,
- severity ENUM('urgent', 'high', 'normal', 'low', 'none'),
+ severity ENUM('urgent', 'high', 'normal', 'low', 'none') NOT NULL,
  deadline DATE,
  taskStatus ENUM('open', 'closed', 'cancel') NOT NULL,
  parentId INT,

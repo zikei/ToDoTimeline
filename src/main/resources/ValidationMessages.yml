@@ -1,0 +1,6 @@
+com:
+  example:
+    todo:
+      validator:
+        notFound:
+          message: "{0}が未入力です。"
