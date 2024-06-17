@@ -17,7 +17,6 @@ class DbUserDetailsService(
     @Transactional(readOnly =  true)
     override fun loadUserByUsername(username: String?): UserDetails {
         val user = username?.let { userRepo.findByUserName(it) }
-        println( user?.toString() )
         user ?: throw UsernameNotFoundException("username NotFound: $username")
         return Login(user)
     }
