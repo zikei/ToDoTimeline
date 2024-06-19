@@ -1,6 +1,6 @@
 package com.example.todo.infrastructure.db.mapper.custom
 
-import com.example.todo.infrastructure.db.record.custom.TodoRecord
+import com.example.todo.infrastructure.db.record.custom.TimelineRecord
 import org.apache.ibatis.annotations.*
 import org.apache.ibatis.type.JdbcType
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider
@@ -19,9 +19,9 @@ interface TimelineMapper {
             Result(column="contents", property="contents", jdbcType=JdbcType.VARCHAR)
         ]
     )
-    fun selectMany(selectStatement: SelectStatementProvider) : List<TodoRecord>
+    fun selectMany(selectStatement: SelectStatementProvider) : List<TimelineRecord>
 
     @SelectProvider(type = SqlProviderAdapter::class, method = "select")
     @ResultMap("TimelineRecordResult")
-    fun selectOne(selectStatement: SelectStatementProvider) : TodoRecord?
+    fun selectOne(selectStatement: SelectStatementProvider) : TimelineRecord?
 }
