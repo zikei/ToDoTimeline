@@ -9,5 +9,6 @@ data class Timeline(
     var userid: Int,
     var createdate: LocalDateTime,
     var contents: String,
-    var taskname: String?
+    var taskname: String?,
+    var dspname:String
 )

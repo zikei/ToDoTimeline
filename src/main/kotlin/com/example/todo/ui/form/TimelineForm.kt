@@ -10,12 +10,13 @@ data class GetTlListResponse(val tlList: List<TlInfo>)
 data class TlInfo(
     var logid: Int,
     var userid: Int,
+    var dspname: String,
     var taskid: Int?,
     var taskname: String?,
     var createdate: LocalDateTime,
     var contents: String
 ) {
     constructor(tl: Timeline) : this(
-        tl.logid!!, tl.userid, tl.taskid, tl.taskname, tl.createdate, tl.contents
+        tl.logid!!, tl.userid, tl.dspname, tl.taskid, tl.taskname, tl.createdate, tl.contents
     )
 }

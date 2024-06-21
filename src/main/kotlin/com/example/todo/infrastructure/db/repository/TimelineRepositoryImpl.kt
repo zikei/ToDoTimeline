@@ -23,7 +23,8 @@ class TimelineRepositoryImpl(
             record.userid!!,
             record.createdate!!,
             record.contents!!,
-            record.taskname
+            record.taskname,
+            record.dspname!!
         )
     }
 }

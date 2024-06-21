@@ -11,5 +11,8 @@ data class TimelineRecord (
     var contents: String? = null,
 
     // タスク
-    var taskname: String? = null
+    var taskname: String? = null,
+
+    // ユーザ
+    var dspname: String? = null
 )

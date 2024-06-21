@@ -15,6 +15,7 @@ interface TimelineMapper {
             Result(column="taskId", property="taskid", jdbcType=JdbcType.INTEGER),
             Result(column="taskName", property="taskname", jdbcType=JdbcType.VARCHAR),
             Result(column="userId", property="userid", jdbcType=JdbcType.INTEGER),
+            Result(column="dspName", property="dspname", jdbcType=JdbcType.VARCHAR),
             Result(column="createDate", property="createdate", jdbcType=JdbcType.TIMESTAMP),
             Result(column="contents", property="contents", jdbcType=JdbcType.VARCHAR)
         ]
