@@ -70,7 +70,7 @@ class TodoRepositoryImpl(
     }
 
     /** TaskモデルをTaskレコードに変換 */
-    fun toRecord(model: Task): TaskRecord {
+    private fun toRecord(model: Task): TaskRecord {
         return TaskRecord(
             model.taskId,
             model.userId,
