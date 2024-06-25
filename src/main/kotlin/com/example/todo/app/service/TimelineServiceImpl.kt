@@ -1,5 +1,6 @@
 package com.example.todo.app.service
 
+import com.example.todo.domain.model.Thinkinglog
 import com.example.todo.domain.model.Timeline
 import com.example.todo.domain.repository.TimelineRepository
 import com.example.todo.domain.service.TimelineService
@@ -12,5 +13,9 @@ class TimelineServiceImpl(
 ) : TimelineService {
     override fun getList(userId: Int): List<Timeline> {
         return tlRepo.findListByUserId(userId)
+    }
+
+    override fun thinkingLogPost(post: Thinkinglog): Int {
+        return tlRepo.insertPost(post)
     }
 }
