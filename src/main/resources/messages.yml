@@ -17,6 +17,7 @@ html:
       submit: Todo作成
   timeline:
     title: タイムライン
+    submit: 投稿
 
 login:
   userName: ユーザ名
@@ -40,3 +41,6 @@ RegisterTaskRequest:
   parentId: 親タスク
   validation:
     taskName: タスク名は2文字以上で指定してください。
+
+RegisterPostRequest:
+  task: タスク

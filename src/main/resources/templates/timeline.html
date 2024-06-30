@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th = "http://www.thymeleaf.org" lang="ja">
+<html xmlns:th = "http://www.thymeleaf.org" lang="ja" class="h-100">
 <head>
     <meta charset="UTF-8">
     <title th:text="#{html.timeline.title}">timeline</title>
@@ -10,17 +10,67 @@
 
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/client-side-templates.js"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 </head>
-<body>
-<h1 th:text="#{html.timeline.title}">timeline</h1>
-<div class="row">
-    <div class="col-1"></div>
-    <div class="col">
-        <ul id="timeline" class="list-group">
-            <div hx-ext="client-side-templates" hx-get="/api/timeline/list" hx-trigger="load"
-                 hx-target="#timeline" handlebars-array-template="TlTemplate"></div>
-        </ul>
+<body class="h-100 mh-100">
+<div class="d-flex flex-column h-100">
+    <div class="row" style="height:10%">
+        <h1 th:text="#{html.timeline.title}">timeline</h1>
+    </div>
+    <div class="row d-flex flex-grow-1" style="height:90%">
+        <div class="col-2"></div>
+        <div class="col d-flex flex-column h-100">
+            <div class="row flex-grow-1 flex-shrink-1 overflow-y-scroll">
+                <ul id="timeline" class="list-group">
+                    <li hx-ext="client-side-templates" hx-get="/api/timeline/list" hx-trigger="load"
+                        hx-target="#timeline" handlebars-array-template="TlTemplate"></li>
+                </ul>
+            </div>
+            <div class="row card">
+                <form hx-post="/api/timeline/post" hx-ext='json-enc' hx-trigger="submit" hx-swap="none" th:object="${registerPostRequest}">
+                    <div class="row">
+                        <div class="col-2">
+                            <div class="row">
+                                <label class="col-auto col-form-label" for="taskId">
+                                    <span th:text="#{RegisterPostRequest.task}">タスク</span>:
+                                </label>
+                                <div class="col">
+                                    <select class="form-control" id="taskId" th:field="*{taskid}" hx-ext="client-side-templates"
+                                            hx-get="/api/todo/list" hx-trigger="load" hx-swap="afterbegin"
+                                            hx-target="#taskId" handlebars-array-template="OptTodoListTemplate">
+                                        <template id="OptTodoListTemplate">
+                                            <option value="" selected> - </option>
+                                            {{#each todoList}}
+                                            <option value="{{taskId}}">
+                                                <p>{{taskName}}</p>
+                                                <p>[[#{todo.taskStatus}]]：{{taskStatus.statusName}}</p>
+                                                <p>[[#{todo.createDate}]]：{{createDate}}</p>
+                                                <p>[[#{todo.deadline}]]：
+                                                    {{#if deadline}} {{deadline}} {{else}} [[#{todo.notSet}]] {{/if}}
+                                                </p>
+                                                <p>[[#{todo.severity}]]：{{severity}}</p>
+                                                {{#if parentId}}
+                                                <p>[[#{todo.parent}]]：{{parentName}}</p>
+                                                {{/if}}
+                                            </option>
+                                            {{/each}}
+                                        </template>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                        <textarea class="form-control" id="contents" th:field="*{contents}"
+                                  minlength="1" maxlength="500" required rows="1"></textarea>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary" th:text="#{html.timeline.submit}">投稿</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
