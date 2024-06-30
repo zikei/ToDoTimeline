@@ -3,4 +3,4 @@ com:
     todo:
       validator:
         notFound:
-          message: "{0}が未入力です。"
+          message: "{0}が見つかりません。"
