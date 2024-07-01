@@ -38,6 +38,7 @@ fun TimelineMapper.selectByUserId(id : Int): List<TimelineRecord>{
             on(Thinkinglog.userid, equalTo(User.userid))
         }
         where(Thinkinglog.userid, isEqualTo(id))
+        orderBy(Thinkinglog.createdate.descending())
     }
     return selectMany(selectStatement)
 }
@@ -51,6 +52,8 @@ fun TimelineMapper.selectByTaskId(id: Int): List<TimelineRecord>{
             on(Thinkinglog.userid, equalTo(User.userid))
         }
         where(Thinkinglog.taskid, isEqualTo(id))
+        orderBy(Thinkinglog.createdate.descending())
+
     }
     return selectMany(selectStatement)
 }

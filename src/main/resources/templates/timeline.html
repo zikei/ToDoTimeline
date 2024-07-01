@@ -12,6 +12,8 @@
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/client-side-templates.js"></script>
     <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+    <script src="/js/timeline.js"></script>
 </head>
 <body class="h-100 mh-100">
 <div class="d-flex flex-column h-100">
@@ -21,14 +23,15 @@
     <div class="row d-flex flex-grow-1" style="height:90%">
         <div class="col-2"></div>
         <div class="col d-flex flex-column h-100">
-            <div class="row flex-grow-1 flex-shrink-1 overflow-y-scroll">
-                <ul id="timeline" class="list-group">
+            <div class="row flex-grow-1 flex-shrink-1 overflow-y-scroll flex-column-reverse">
+                <ul id="timeline" class="list-group flex-column-reverse">
                     <li hx-ext="client-side-templates" hx-get="/api/timeline/list" hx-trigger="load"
                         hx-target="#timeline" handlebars-array-template="TlTemplate"></li>
                 </ul>
             </div>
             <div class="row card">
-                <form hx-post="/api/timeline/post" hx-ext='json-enc' hx-trigger="submit" hx-swap="none" th:object="${registerPostRequest}">
+                <form hx-post="/api/timeline/post" hx-ext='json-enc' hx-trigger="submit" hx-swap="none"
+                      hx-on::after-request="clearContentsTextarea()" th:object="${registerPostRequest}">
                     <div class="row">
                         <div class="col-2">
                             <div class="row">
@@ -61,7 +64,7 @@
                             </div>
                         </div>
                         <div class="col-8">
-                        <textarea class="form-control" id="contents" th:field="*{contents}"
+                        <textarea class="form-control" id="contentsForm" th:field="*{contents}"
                                   minlength="1" maxlength="500" required rows="1"></textarea>
                         </div>
                         <div class="col-2">

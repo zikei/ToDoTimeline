@@ -87,12 +87,15 @@ class TodoApiController(
         @RequestBody req: UpdTaskStatusRequest,
         @AuthenticationPrincipal loginUser: Login,
         response: HttpServletResponse
-    ){
+    ): GetTodoDetailResponse{
         val reqTaskId = req.taskId ?: throw BadRequestException()
-        val taskId = todoService.getTodo(reqTaskId, loginUser.user)?.taskId ?: throw BadRequestException()
+        val task = todoService.getTodo(reqTaskId, loginUser.user) ?: throw BadRequestException()
         val taskStatus = TaskStatus.getTaskStatus(req.taskStatus) ?: throw BadRequestException()
 
-        todoService.updTaskStatus(taskId, taskStatus)
-        response.setHeader("hx-redirect", "/todo/detail/$taskId")
+        todoService.updTaskStatus(task.taskId, taskStatus)
+        val todo = todoService.getTodo(task.taskId)?.let{
+            TodoInfo(it)
+        }
+        return GetTodoDetailResponse(todo!!)
     }
 }
