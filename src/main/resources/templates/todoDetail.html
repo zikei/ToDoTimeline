@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja" class="h-100">
 <head>
     <meta charset="UTF-8">
     <title th:text="#{html.todo.detail.title}">ToDo</title>
@@ -15,78 +15,121 @@
 
     <script src="/js/HandlebarsHelpers.js"></script>
 </head>
-<body>
-<div id="todoDetail">
-    <h1 th:text="#{html.todo.detail.title}">ToDo</h1>
-</div>
-
-
-<div hx-ext="client-side-templates" th:hx-get="|/api/todo/detail/${taskId}|" hx-trigger="load"
-     hx-target="#todoDetail" handlebars-template="TodoTemplate">
-    <template id="TodoTemplate">
-        {{#if todo}}
-        {{#todo}}
-        <div class="row">
-            <div class="col-1"></div>
-            <div class="col">
-                <h1>{{taskName}}</h1>
-                <div class="card">
-                    <div class="row">
-                        <div class="col-1">
-                            <img class="img-thumbnail"
-                                 src="/img/{{taskStatus.status}}.svg" alt="{{taskStatus.statusName}}"/>
-                        </div>
-                        <div class="col-3">
-                            <form hx-put="/api/todo/upd/status" hx-ext='json-enc' hx-trigger="change" th:object="${updTaskStatusRequest}">
-                                <input type="hidden" th:field="*{taskId}">
-                                <span th:text="|#{todo.taskStatus}:|">状態:</span>
-                                <div class="form-check" th:each="taskSts : ${taskStatusList}">
-                                    <!--/* TODO:th:field="*{taskStatus}"を利用する場合checkedが無効化される */-->
-                                    {{#if (eq this.taskStatus.status "[[${taskSts.status}]]")}}
+<body class="h-100">
+<div class="row h-100">
+    <div class="col-2"></div>
+    <div class="col-9 h-100">
+        <div id="todoDetail" class="row">
+            <h1 th:text="#{html.todo.detail.title}">ToDo</h1>
+            <div hx-ext="client-side-templates" th:hx-get="|/api/todo/detail/${taskId}|" hx-trigger="load"
+                 hx-target="#todoDetail" handlebars-template="TodoTemplate">
+                <template id="TodoTemplate">
+                    {{#if todo}}
+                    {{#todo}}
+                    <h1>{{taskName}}</h1>
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-1">
+                                <img class="img-thumbnail"
+                                     src="/img/{{taskStatus.status}}.svg" alt="{{taskStatus.statusName}}"/>
+                            </div>
+                            <div class="col-3">
+                                <form hx-put="/api/todo/upd/status" hx-ext='json-enc' hx-trigger="change" th:object="${updTaskStatusRequest}">
+                                    <input type="hidden" th:field="*{taskId}">
+                                    <span th:text="|#{todo.taskStatus}:|">状態:</span>
+                                    <div class="form-check" th:each="taskSts : ${taskStatusList}">
+                                        <!--/* TODO:th:field="*{taskStatus}"を利用する場合checkedが無効化される */-->
+                                        {{#if (eq this.taskStatus.status "[[${taskSts.status}]]")}}
                                         <input class="form-check-input" type="radio" th:id="|ts_${taskSts.status}|" th:value="${taskSts.status}" name="taskStatus" checked>
-                                    {{else}}
+                                        {{else}}
                                         <input class="form-check-input" type="radio" th:id="|ts_${taskSts.status}|" th:value="${taskSts.status}" name="taskStatus">
-                                    {{/if}}
-                                    <label class="form-check-label" th:for="|ts_${taskSts.status}|" th:text="${taskSts.statusName}">statusName</label>
+                                        {{/if}}
+                                        <label class="form-check-label" th:for="|ts_${taskSts.status}|" th:text="${taskSts.statusName}">statusName</label>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <p>[[#{todo.createDate}]]：{{createDate}}</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <p>[[#{todo.deadline}]]：
+                                            {{#if deadline}} {{deadline}} {{else}} [[#{todo.notSet}]] {{/if}}
+                                        </p>
+                                    </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-3">
-                                    <p>[[#{todo.createDate}]]：{{createDate}}</p>
-                                </div>
-                                <div class="col-3">
-                                    <p>[[#{todo.deadline}]]：
-                                        {{#if deadline}} {{deadline}} {{else}} [[#{todo.notSet}]] {{/if}}
-                                    </p>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <p>[[#{todo.severity}]]：{{severity}}</p>
+                                    </div>
+                                    <div class="col-3">
+                                        {{#if parentId}}
+                                        <a href="/todo/detail/{{parentId}}">[[#{todo.parent}]]：{{parentName}}</a>
+                                        {{/if}}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-3">
-                                    <p>[[#{todo.severity}]]：{{severity}}</p>
-                                </div>
-                                <div class="col-3">
-                                    {{#if parentId}}
-                                    <a href="/todo/detail/{{parentId}}">[[#{todo.parent}]]：{{parentName}}</a>
-                                    {{/if}}
-                                </div>
-                            </div>
                         </div>
+                        {{#if memo}}
+                        <div class="card-footer">
+                            <p>{{memo}}</p>
+                        </div>
+                        {{/if}}
                     </div>
-                    {{#if memo}}
-                    <div class="card-footer">
-                        <p>{{memo}}</p>
-                    </div>
+                    {{/todo}}
                     {{/if}}
+                </template>
+            </div>
+        </div>
+
+        <div class="row h-75">
+            <div class="d-flex flex-column h-100">
+                <div class="row flex-grow-1 flex-shrink-1 overflow-y-scroll">
+                    <ul id="timeline" class="list-group">
+                        <li hx-ext="client-side-templates" th:hx-get="|/api/timeline/list/todo/${taskId}|" hx-trigger="load"
+                            hx-target="#timeline" handlebars-array-template="TlTemplate"></li>
+                    </ul>
+                </div>
+                <div class="row card">
+                    <form hx-post="/api/timeline/post" hx-ext='json-enc' hx-trigger="submit" hx-swap="none" th:object="${registerPostRequest}">
+                        <div class="row">
+                            <input type="hidden" th:field="*{taskid}">
+                            <div class="col-10">
+                                <textarea class="form-control" id="contents" th:field="*{contents}"
+                                  minlength="1" maxlength="500" required rows="1"></textarea>
+                            </div>
+                            <div class="col-2">
+                                <button type="submit" class="btn btn-primary" th:text="#{html.timeline.submit}">投稿</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="col-1"></div>
         </div>
-        {{/todo}}
-        {{/if}}
-    </template>
+    </div>
+    <div class="col-1"></div>
 </div>
+
+<template id="TlTemplate">
+    {{#each tlList}}
+    <li class="list-group-item">
+        <div>
+            <div class="row">
+                <div class="col-1">
+                    <span class="fw-lighter">{{dspname}}</span>
+                </div>
+                <div class="col-2">
+                    <span class="fw-lighter">{{createdate}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <p>{{contents}}</p>
+            </div>
+        </div>
+    </li>
+    {{/each}}
+</template>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"

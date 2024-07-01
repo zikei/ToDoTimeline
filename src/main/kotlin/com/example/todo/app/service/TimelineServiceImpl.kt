@@ -15,6 +15,10 @@ class TimelineServiceImpl(
         return tlRepo.findListByUserId(userId)
     }
 
+    override fun getListByTask(taskId: Int): List<Timeline> {
+        return tlRepo.findListByTaskId(taskId)
+    }
+
     override fun thinkingLogPost(post: Thinkinglog): Int {
         return tlRepo.insertPost(post)
     }

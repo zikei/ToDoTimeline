@@ -5,6 +5,7 @@ import com.example.todo.domain.model.Timeline
 import com.example.todo.domain.repository.TimelineRepository
 import com.example.todo.infrastructure.db.mapper.ThinkinglogMapper
 import com.example.todo.infrastructure.db.mapper.custom.TimelineMapper
+import com.example.todo.infrastructure.db.mapper.custom.selectByTaskId
 import com.example.todo.infrastructure.db.mapper.custom.selectByUserId
 import com.example.todo.infrastructure.db.mapper.insert
 import com.example.todo.infrastructure.db.record.ThinkinglogRecord
@@ -19,6 +20,10 @@ class TimelineRepositoryImpl(
 ) : TimelineRepository {
     override fun findListByUserId(userId: Int): List<Timeline> {
         return tlMapper.selectByUserId(userId).map { toModel(it) }
+    }
+
+    override fun findListByTaskId(taskId: Int): List<Timeline> {
+        return tlMapper.selectByTaskId(taskId).map { toModel(it) }
     }
 
     override fun insertPost(post: Thinkinglog): Int {

@@ -3,6 +3,7 @@ package com.example.todo.app.service
 import com.example.todo.domain.enums.TaskStatus
 import com.example.todo.domain.model.Task
 import com.example.todo.domain.model.Todo
+import com.example.todo.domain.model.User
 import com.example.todo.domain.repository.TodoRepository
 import com.example.todo.domain.service.TodoService
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,6 +20,18 @@ class TodoServiceImpl(
 
     override fun getTodo(taskId: Int): Todo? {
         return todoRepo.findById(taskId)
+    }
+
+    override fun getTodo(taskId: Int, user: User): Todo?{
+        val todo = getTodo(taskId)?.let {
+            if(it.userId != user.userId){
+                null
+            }else{
+                it
+            }
+        }
+
+        return todo
     }
 
     override fun create(task: Task): Int {

@@ -8,6 +8,9 @@ interface TimelineService {
     /** timelineの取得 */
     fun getList(userId: Int): List<Timeline>
 
+    /** タスクIDからtimelineの取得 */
+    fun getListByTask(taskId: Int): List<Timeline>
+
     /**
      * 投稿
      * @return 登録ID

@@ -42,6 +42,19 @@ fun TimelineMapper.selectByUserId(id : Int): List<TimelineRecord>{
     return selectMany(selectStatement)
 }
 
+fun TimelineMapper.selectByTaskId(id: Int): List<TimelineRecord>{
+    val selectStatement = select(columnList).from(Thinkinglog) {
+        leftJoin(Task) {
+            on(Thinkinglog.taskid, equalTo(Task.taskid))
+        }
+        leftJoin(User) {
+            on(Thinkinglog.userid, equalTo(User.userid))
+        }
+        where(Thinkinglog.taskid, isEqualTo(id))
+    }
+    return selectMany(selectStatement)
+}
+
 fun TimelineMapper.selectByPrimaryKey(id: Int): TimelineRecord? {
     val selectStatement = select(columnList).from(Thinkinglog) {
         leftJoin(Task) {

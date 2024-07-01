@@ -4,6 +4,7 @@ import com.example.todo.domain.exception.BadRequestException
 import com.example.todo.domain.model.Login
 import com.example.todo.domain.model.Thinkinglog
 import com.example.todo.domain.service.TimelineService
+import com.example.todo.domain.service.TodoService
 import com.example.todo.ui.form.GetTlListResponse
 import com.example.todo.ui.form.RegisterPostRequest
 import com.example.todo.ui.form.TlInfo
@@ -23,6 +24,7 @@ import java.time.LocalDateTime
 @RequestMapping("/api/timeline")
 class TimelineApiController(
     @Autowired private val tlService: TimelineService,
+    @Autowired private val todoService: TodoService,
     @Autowired private val postValidator: ThinkingLogPostValidator
 ) {
     @InitBinder("registerPostRequest")
@@ -35,6 +37,20 @@ class TimelineApiController(
     @GetMapping("/list")
     fun getList(@AuthenticationPrincipal loginUser: Login): GetTlListResponse {
         val tlList = tlService.getList(loginUser.user.userId).map {
+            TlInfo(it)
+        }
+        return GetTlListResponse(tlList)
+    }
+
+    /** タスクからタイムラインを取得 */
+    @GetMapping("/list/todo/{taskId}")
+    fun getListByTaskId(
+        @PathVariable("taskId") taskId: Int,
+        @AuthenticationPrincipal loginUser: Login
+    ): GetTlListResponse {
+        val todo = todoService.getTodo(taskId, loginUser.user) ?: throw BadRequestException()
+
+        val tlList = tlService.getListByTask(todo.taskId).map {
             TlInfo(it)
         }
         return GetTlListResponse(tlList)

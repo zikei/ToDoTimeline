@@ -6,8 +6,6 @@ import com.example.todo.domain.exception.BadRequestException
 import com.example.todo.domain.exception.NotFoundException
 import com.example.todo.domain.model.Login
 import com.example.todo.domain.model.Task
-import com.example.todo.domain.model.Todo
-import com.example.todo.domain.model.User
 import com.example.todo.domain.service.TodoService
 import com.example.todo.ui.form.*
 import com.example.todo.ui.validator.TodoCreateValidator
@@ -49,7 +47,7 @@ class TodoApiController(
         @PathVariable("taskId") taskId: Int,
         @AuthenticationPrincipal loginUser: Login
     ): GetTodoDetailResponse {
-        val todo = getTodo(taskId, loginUser.user)?.let {
+        val todo = todoService.getTodo(taskId, loginUser.user)?.let {
             TodoInfo(it)
         } ?: throw NotFoundException()
 
@@ -90,27 +88,11 @@ class TodoApiController(
         @AuthenticationPrincipal loginUser: Login,
         response: HttpServletResponse
     ){
-        val taskId = getTodo(req.taskId, loginUser.user)?.taskId ?: throw BadRequestException()
+        val reqTaskId = req.taskId ?: throw BadRequestException()
+        val taskId = todoService.getTodo(reqTaskId, loginUser.user)?.taskId ?: throw BadRequestException()
         val taskStatus = TaskStatus.getTaskStatus(req.taskStatus) ?: throw BadRequestException()
 
         todoService.updTaskStatus(taskId, taskStatus)
         response.setHeader("hx-redirect", "/todo/detail/$taskId")
-    }
-
-    /**
-     * todoを取得する
-     * todoが見つからない・ユーザーが違う場合 : null
-     */
-    private fun getTodo(taskId: Int?, user: User): Todo?{
-        taskId ?: return null
-        val todo = todoService.getTodo(taskId)?.let {
-            if(it.userId != user.userId){
-                null
-            }else{
-                it
-            }
-        }
-
-        return todo
     }
 }
