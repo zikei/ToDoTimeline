@@ -10,6 +10,8 @@ interface TimelineRepository {
     /** タスクIDから投稿のListを取得 */
     fun findListByTaskId(taskId: Int): List<Timeline>
 
+    fun findById(logId: Int): Timeline?
+
     /**
      * 投稿の登録
      * @return 登録ID
