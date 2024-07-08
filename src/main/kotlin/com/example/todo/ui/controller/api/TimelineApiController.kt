@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 import java.time.LocalDateTime
 
 
@@ -66,14 +67,30 @@ class TimelineApiController(
     ) {
         if (bindingResult.hasErrors()) throw BadRequestException()
 
-        tlService.thinkingLogPost(
+        val userId = loginUser.user.userId
+        val logId = tlService.thinkingLogPost(
             Thinkinglog(
                 null,
                 req.taskid,
-                loginUser.user.userId,
+                userId,
                 LocalDateTime.now(),
                 req.contents!!
             )
         )
+
+        val tlInfo = tlService.getTimelineById(logId)?.let { TlInfo(it) }
+        tlInfo?.let{ tlService.notifyMessage(userId, req.taskid, it) }
+    }
+
+    /** SSEの登録 */
+    @GetMapping("/sse")
+    fun seeRegister(@AuthenticationPrincipal loginUser: Login,
+                    @RequestParam(required = false) taskId: Int? = null
+    ): SseEmitter{
+        if(taskId != null){
+            todoService.getTodo(taskId, loginUser.user) ?: throw BadRequestException()
+        }
+
+        return tlService.sseTimelineRegister(loginUser.user.userId, taskId)
     }
 }
