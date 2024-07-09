@@ -23,9 +23,9 @@ class TodoCreateValidator(
 
         val pid = form.parentId ?: return
 
-        val task = todoService.getTodo(pid)
-        if (task == null || task.userId != loginUser.user.userId) {
-            errors.rejectValue("parentId", "com.example.todo.validator.notFound.message")
-        }
+        todoService.getTodo(pid, loginUser.user) ?: errors.rejectValue(
+            "parentId",
+            "com.example.todo.validator.notFound.message"
+        )
     }
 }

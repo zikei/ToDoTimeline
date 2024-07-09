@@ -5,13 +5,15 @@ import com.example.todo.domain.model.Task
 import com.example.todo.domain.model.Todo
 import com.example.todo.domain.model.User
 import com.example.todo.domain.repository.TodoRepository
+import com.example.todo.domain.repository.UserRepository
 import com.example.todo.domain.service.TodoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class TodoServiceImpl(
-    @Autowired val todoRepo: TodoRepository
+    @Autowired val todoRepo: TodoRepository,
+    @Autowired val userRepo: UserRepository
 ) : TodoService {
 
     override fun getList(userId: Int): List<Todo> {
@@ -23,11 +25,12 @@ class TodoServiceImpl(
     }
 
     override fun getTodo(taskId: Int, user: User): Todo?{
-        val todo = getTodo(taskId)?.let {
-            if(it.userId != user.userId){
-                null
+        val todo = getTodo(taskId)?.let { todo ->
+            val usersId = userRepo.findByTaskId(todo.taskId).map { user -> user.userId }
+            if(usersId.contains(user.userId)){
+                todo
             }else{
-                it
+                null
             }
         }
 

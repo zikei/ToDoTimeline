@@ -23,9 +23,9 @@ class ThinkingLogPostValidator(
 
         val taskId = form.taskid ?: return
 
-        val task = todoService.getTodo(taskId)
-        if (task == null || task.userId != loginUser.user.userId) {
-            errors.rejectValue("taskid", "com.example.todo.validator.notFound.message")
-        }
+        todoService.getTodo(taskId, loginUser.user) ?: errors.rejectValue(
+            "taskid",
+            "com.example.todo.validator.notFound.message"
+        )
     }
 }

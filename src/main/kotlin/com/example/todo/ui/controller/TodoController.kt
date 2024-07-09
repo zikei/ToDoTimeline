@@ -65,10 +65,7 @@ class TodoController(
         @RequestParam(required = false) pid: Int? = null
     ): String {
         pid?.let {
-            val task = todoService.getTodo(it)
-            if (task == null || task.userId != loginUser.user.userId) {
-                throw AccessDeniedException()
-            }
+            val task = todoService.getTodo(it, loginUser.user) ?: throw AccessDeniedException()
             model.addAttribute("ptask", task)
         }
 
