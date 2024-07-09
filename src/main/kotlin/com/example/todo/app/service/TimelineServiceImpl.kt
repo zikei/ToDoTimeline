@@ -3,6 +3,7 @@ package com.example.todo.app.service
 import com.example.todo.domain.model.Thinkinglog
 import com.example.todo.domain.model.Timeline
 import com.example.todo.domain.repository.TimelineRepository
+import com.example.todo.domain.repository.UserRepository
 import com.example.todo.domain.service.TimelineService
 import com.example.todo.ui.form.TlInfo
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 @Service
 class TimelineServiceImpl(
     @Autowired val tlRepo: TimelineRepository,
+    @Autowired val userRepo: UserRepository,
     @Value("\${sse.timeout}") private val sseTimeout: String
 ) : TimelineService {
     private val timelineEmitters: MutableMap<EmitterMapKey, SseEmitter> = mutableMapOf()
@@ -30,7 +32,16 @@ class TimelineServiceImpl(
     }
 
     override fun thinkingLogPost(post: Thinkinglog): Int {
-        return tlRepo.insertPost(post)
+        val insertId = tlRepo.insertPost(post)
+        val tl = getTimelineById(insertId)
+
+        tl?.let {
+            val notifyUsersId = tl.taskid?.let { taskId -> userRepo.findByTaskId(taskId).map { user -> user.userId } }
+                ?: listOf(tl.userid)
+            notifyMessage(notifyUsersId, TlInfo(it))
+        }
+
+        return insertId
     }
 
     override fun sseTimelineRegister(userId: Int, taskId: Int?): SseEmitter {
@@ -44,15 +55,17 @@ class TimelineServiceImpl(
         return emitter
     }
 
-    override fun notifyMessage(userId: Int, taskId: Int?, msg: TlInfo) {
+    override fun notifyMessage(userIds: List<Int>, msg: TlInfo) {
+        val taskId = msg.taskid
         val emitters: MutableList<SseEmitter> = mutableListOf()
-        timelineEmitters[EmitterMapKey(userId, taskId)]?.let { emitters.add(it) }
-        if(taskId != null) timelineEmitters[EmitterMapKey(userId, null)]?.let { emitters.add(it) }
 
-        if(emitters.isNotEmpty()){
-            emitters.forEach{
-                it.send(SseEmitter.event().data(msg))
-            }
+        userIds.forEach{ userId ->
+            timelineEmitters[EmitterMapKey(userId, taskId)]?.let { emitters.add(it) }
+            taskId?.let { timelineEmitters[EmitterMapKey(userId, null)]?.let { emitters.add(it) } }
+        }
+
+        emitters.forEach{
+            it.send(SseEmitter.event().data(msg))
         }
     }
 

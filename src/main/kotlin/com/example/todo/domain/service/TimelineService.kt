@@ -26,5 +26,5 @@ interface TimelineService {
     fun sseTimelineRegister(userId: Int, taskId: Int?): SseEmitter
 
     /** メッセージの通知 */
-    fun notifyMessage(userId: Int, taskId: Int?, msg: TlInfo)
+    fun notifyMessage(userIds: List<Int>,msg: TlInfo)
 }

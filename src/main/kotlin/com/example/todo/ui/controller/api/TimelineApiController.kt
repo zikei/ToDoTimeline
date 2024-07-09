@@ -67,19 +67,15 @@ class TimelineApiController(
     ) {
         if (bindingResult.hasErrors()) throw BadRequestException()
 
-        val userId = loginUser.user.userId
-        val logId = tlService.thinkingLogPost(
+        tlService.thinkingLogPost(
             Thinkinglog(
                 null,
                 req.taskid,
-                userId,
+                loginUser.user.userId,
                 LocalDateTime.now(),
                 req.contents!!
             )
         )
-
-        val tlInfo = tlService.getTimelineById(logId)?.let { TlInfo(it) }
-        tlInfo?.let{ tlService.notifyMessage(userId, req.taskid, it) }
     }
 
     /** SSEの登録 */
@@ -87,9 +83,7 @@ class TimelineApiController(
     fun seeRegister(@AuthenticationPrincipal loginUser: Login,
                     @RequestParam(required = false) taskId: Int? = null
     ): SseEmitter{
-        if(taskId != null){
-            todoService.getTodo(taskId, loginUser.user) ?: throw BadRequestException()
-        }
+        taskId?.let { todoService.getTodo(it, loginUser.user) ?: throw BadRequestException() }
 
         return tlService.sseTimelineRegister(loginUser.user.userId, taskId)
     }
