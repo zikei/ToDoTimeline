@@ -13,6 +13,7 @@ private val columnList = listOf(
     Task.taskname,
     Thinkinglog.userid,
     User.dspname,
+    User.role,
     Thinkinglog.createdate,
     Thinkinglog.contents
 )

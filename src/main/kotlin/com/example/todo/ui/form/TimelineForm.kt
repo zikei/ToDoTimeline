@@ -1,5 +1,6 @@
 package com.example.todo.ui.form
 
+import com.example.todo.domain.enums.Role
 import com.example.todo.domain.model.Timeline
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
@@ -24,6 +25,7 @@ data class RegisterPostRequest(
 data class TlInfo(
     var logid: Int,
     var userid: Int,
+    var isSysUser: Boolean,
     var dspname: String,
     var taskid: Int?,
     var taskname: String?,
@@ -31,6 +33,6 @@ data class TlInfo(
     var contents: String
 ) {
     constructor(tl: Timeline) : this(
-        tl.logid!!, tl.userid, tl.dspname, tl.taskid, tl.taskname, tl.createdate.format(dateTimeFormat), tl.contents
+        tl.logid!!, tl.userid, (tl.role == Role.SYSTEM), tl.dspname, tl.taskid, tl.taskname, tl.createdate.format(dateTimeFormat), tl.contents
     )
 }

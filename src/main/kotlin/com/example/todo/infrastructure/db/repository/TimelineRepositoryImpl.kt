@@ -43,6 +43,7 @@ class TimelineRepositoryImpl(
             record.logid!!,
             record.taskid,
             record.userid!!,
+            record.role!!,
             record.createdate!!,
             record.contents!!,
             record.taskname,

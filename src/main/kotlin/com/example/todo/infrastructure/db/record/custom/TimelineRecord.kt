@@ -1,5 +1,6 @@
 package com.example.todo.infrastructure.db.record.custom
 
+import com.example.todo.domain.enums.Role
 import java.time.LocalDateTime
 
 data class TimelineRecord (
@@ -14,5 +15,6 @@ data class TimelineRecord (
     var taskname: String? = null,
 
     // ユーザ
-    var dspname: String? = null
+    var dspname: String? = null,
+    var role: Role? = null
 )
