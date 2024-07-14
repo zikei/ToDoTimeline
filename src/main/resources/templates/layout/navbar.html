@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th = "http://www.thymeleaf.org" lang="ja">
+<html xmlns:th = "http://www.thymeleaf.org" lang="ja"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>nav</title>
 </head>
@@ -32,6 +33,12 @@
                 </li>
             </ul>
         </div>
+        <th:block sec:authorize="isAuthenticated()">
+            <a href="/logout" class="btn btn-primary" th:text="#{html.logout.title}">ログイン</a>
+        </th:block>
+        <th:block sec:authorize="isAnonymous()">
+            <a href="/login" class="btn btn-primary" th:text="#{html.login.title}">ログイン</a>
+        </th:block>
     </div>
 </nav>
 </body>

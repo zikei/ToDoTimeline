@@ -8,6 +8,8 @@ html:
     title: ログイン
     submit: ログイン
     error: ユーザー名またはパスワードが違います。
+  logout:
+    title: ログアウト
   todo:
     title: Todo
     list:
