@@ -10,6 +10,8 @@ html:
     error: ユーザー名またはパスワードが違います。
   todo:
     title: Todo
+    list:
+      title: Todo一覧
     detail:
       title: Todo詳細
     create:
