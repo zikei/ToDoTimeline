@@ -18,25 +18,28 @@
     </header>
     <div class="row d-flex flex-grow-1" style="height:90%">
         <div class="col">
-            <h1 th:text="#{html.login.title}">login</h1>
-            <form th:action="@{/login}" method="post">
-                <div>
-                    <label for="username" th:text="#{login.userName}">ユーザー名</label>
-                    <input type="text" id="username" name="username">
-                </div>
-                <div>
-                    <label for="password" th:text="#{login.password}">パスワード</label>
-                    <input type="password" id="password" name="password">
-                </div>
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <h1 class="text-center" th:text="#{html.login.title}">login</h1>
+                <form th:action="@{/login}" method="post">
+                    <div class="mb-3">
+                        <label for="username" class="form-label" th:text="#{login.userName}">ユーザー名</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label" th:text="#{login.password}">パスワード</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
 
-                <div th:if="${param.error}">
-                    <span th:text="#{html.login.error}">error</span>
-                </div>
+                    <div class="text-center" th:if="${param.error}">
+                        <span class="badge text-bg-danger" th:text="#{html.form.error}">エラー</span>
+                        <span class="text-danger" th:text="#{html.login.error}">error</span>
+                    </div>
 
-                <div>
-                    <input type="submit" id="login" th:value="#{html.login.submit}">
-                </div>
-            </form>
+                    <div>
+                        <button type="submit" class="btn btn-primary center-block" id="loginSubmit" th:value="#{html.login.submit}">ログイン</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

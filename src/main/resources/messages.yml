@@ -2,6 +2,7 @@ html:
   form:
     required: 必須
     option: 任意
+    error: エラー
   home:
     title: ホーム
   login:
