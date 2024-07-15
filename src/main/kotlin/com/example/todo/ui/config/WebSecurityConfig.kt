@@ -30,6 +30,7 @@ class WebSecurityConfig(@Autowired val userDetailsService: UserDetailsService) {
         http {
             authorizeHttpRequests {
                 authorize(PathRequest.toStaticResources().atCommonLocations(), permitAll)
+                authorize("/img/**", permitAll)
                 authorize("/", permitAll)
                 authorize(anyRequest, authenticated)
             }

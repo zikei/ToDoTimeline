@@ -2,19 +2,27 @@ html:
   form:
     required: 必須
     option: 任意
+    error: エラー
   home:
     title: ホーム
   login:
     title: ログイン
     submit: ログイン
     error: ユーザー名またはパスワードが違います。
+  logout:
+    title: ログアウト
   todo:
     title: Todo
+    list:
+      title: Todo一覧
     detail:
       title: Todo詳細
     create:
       title: 新規Todo
       submit: Todo作成
+  timeline:
+    title: タイムライン
+    submit: 投稿
 
 login:
   userName: ユーザ名
@@ -22,6 +30,7 @@ login:
 
 todo:
   taskName: タスク名
+  memo: メモ
   createDate: 作成日
   severity: 重要度
   deadline: 期限
@@ -38,3 +47,6 @@ RegisterTaskRequest:
   parentId: 親タスク
   validation:
     taskName: タスク名は2文字以上で指定してください。
+
+RegisterPostRequest:
+  task: タスク

@@ -4,3 +4,11 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driverClassName: com.mysql.cj.jdbc.Driver
+
+user:
+  sys:
+    role: SYSTEM
+    id: ${SYS_USER_ID}
+
+sse:
+  timeout: 1800000

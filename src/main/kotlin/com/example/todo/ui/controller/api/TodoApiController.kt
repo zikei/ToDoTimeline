@@ -6,19 +6,21 @@ import com.example.todo.domain.exception.BadRequestException
 import com.example.todo.domain.exception.NotFoundException
 import com.example.todo.domain.model.Login
 import com.example.todo.domain.model.Task
-import com.example.todo.domain.model.Todo
-import com.example.todo.domain.model.User
+import com.example.todo.domain.model.Thinkinglog
+import com.example.todo.domain.service.TimelineService
 import com.example.todo.domain.service.TodoService
 import com.example.todo.ui.form.*
 import com.example.todo.ui.validator.TodoCreateValidator
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 
 /** ToDoコントローラ */
@@ -26,7 +28,9 @@ import java.time.LocalDate
 @RequestMapping("/api/todo")
 class TodoApiController(
     @Autowired private val todoService: TodoService,
-    @Autowired private val todoCreateValidator: TodoCreateValidator
+    @Autowired private val tlService: TimelineService,
+    @Autowired private val todoCreateValidator: TodoCreateValidator,
+    @Value("\${user.sys.id}") private val sysUserId: String
 ) {
     @InitBinder("registerTaskRequest")
     fun initBinder(webDataBinder: WebDataBinder) {
@@ -49,7 +53,7 @@ class TodoApiController(
         @PathVariable("taskId") taskId: Int,
         @AuthenticationPrincipal loginUser: Login
     ): GetTodoDetailResponse {
-        val todo = getTodo(taskId, loginUser.user)?.let {
+        val todo = todoService.getTodo(taskId, loginUser.user)?.let {
             TodoInfo(it)
         } ?: throw NotFoundException()
 
@@ -80,6 +84,16 @@ class TodoApiController(
             )
         )
 
+        tlService.thinkingLogPost(
+            Thinkinglog(
+                null,
+                taskId,
+                sysUserId.toInt(),
+                LocalDateTime.now(),
+                "新規: ${req.taskName} を作成"
+            )
+        )
+
         response.setHeader("hx-redirect", "/todo/detail/$taskId")
     }
 
@@ -89,28 +103,27 @@ class TodoApiController(
         @RequestBody req: UpdTaskStatusRequest,
         @AuthenticationPrincipal loginUser: Login,
         response: HttpServletResponse
-    ){
-        val taskId = getTodo(req.taskId, loginUser.user)?.taskId ?: throw BadRequestException()
+    ): GetTodoDetailResponse{
+        val reqTaskId = req.taskId ?: throw BadRequestException()
+        val task = todoService.getTodo(reqTaskId, loginUser.user) ?: throw BadRequestException()
         val taskStatus = TaskStatus.getTaskStatus(req.taskStatus) ?: throw BadRequestException()
 
-        todoService.updTaskStatus(taskId, taskStatus)
-        response.setHeader("hx-redirect", "/todo/detail/$taskId")
-    }
-
-    /**
-     * todoを取得する
-     * todoが見つからない・ユーザーが違う場合 : null
-     */
-    private fun getTodo(taskId: Int?, user: User): Todo?{
-        taskId ?: return null
-        val todo = todoService.getTodo(taskId)?.let {
-            if(it.userId != user.userId){
-                null
-            }else{
-                it
-            }
+        todoService.updTaskStatus(task.taskId, taskStatus)
+        val todo = todoService.getTodo(task.taskId)?.let{
+            TodoInfo(it)
         }
 
-        return todo
+
+        tlService.thinkingLogPost(
+            Thinkinglog(
+                null,
+                todo!!.taskId,
+                sysUserId.toInt(),
+                LocalDateTime.now(),
+                "変更: ${todo.taskName} の状態を ${todo.taskStatus.statusName} に変更"
+            )
+        )
+
+        return GetTodoDetailResponse(todo)
     }
 }
