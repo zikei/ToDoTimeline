@@ -7,6 +7,7 @@ import com.example.todo.domain.model.Login
 import com.example.todo.domain.service.TodoService
 import com.example.todo.ui.form.RegisterPostRequest
 import com.example.todo.ui.form.RegisterTaskRequest
+import com.example.todo.ui.form.TodoInfo
 import com.example.todo.ui.form.UpdTaskStatusRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -66,7 +67,7 @@ class TodoController(
     ): String {
         pid?.let {
             val task = todoService.getTodo(it, loginUser.user) ?: throw AccessDeniedException()
-            model.addAttribute("ptask", task)
+            model.addAttribute("ptask", TodoInfo(task))
         }
 
         val severityList = Severity.entries.toTypedArray()

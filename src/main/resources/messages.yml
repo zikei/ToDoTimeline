@@ -30,6 +30,7 @@ login:
 
 todo:
   taskName: タスク名
+  memo: メモ
   createDate: 作成日
   severity: 重要度
   deadline: 期限

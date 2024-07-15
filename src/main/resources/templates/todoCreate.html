@@ -74,13 +74,8 @@
                             hx-target="#parentId" handlebars-array-template="OptTodoListTemplate">
                         <template id="OptTodoListTemplate">
                             <th:block th:if="${ptask != null}">
-                                <option selected th:value="${ptask.taskId}">
-                                    <p th:text="${ptask.taskName}">タスク名</p>
-                                    <p th:text="|#{todo.taskStatus}：${ptask.taskStatus.statusName}|">状態：</p>
-                                    <p th:text="|#{todo.createDate}：${ptask.createDate}|">作成日：</p>
-                                    <p th:text="#{todo.deadline} + '：' + (${ptask.deadline != null}?${ptask.deadline} : '未設定')">期限：</p>
-                                    <p th:text="|#{todo.severity}：${ptask.severity.severityName}|">重要度：</p>
-                                    <p th:text="|#{todo.parent}：${ptask.parent.taskName}|" th:if="${ptask.parent.taskName}">親タスク名：</p>
+                                <option selected th:value="${ptask.taskId}" th:text="|${ptask.taskName}  #{todo.taskStatus}：${ptask.taskStatus.statusName}  #{todo.memo}：${ptask.memo}|">
+                                    タスク名 状態 メモ
                                 </option>
                             </th:block>
                             <th:block th:if="${ptask == null}">
@@ -88,16 +83,9 @@
                             </th:block>
                             {{#each todoList}}
                             <option value="{{taskId}}">
-                                <p>{{taskName}}</p>
-                                <p>[[#{todo.taskStatus}]]：{{taskStatus.statusName}}</p>
-                                <p>[[#{todo.createDate}]]：{{createDate}}</p>
-                                <p>[[#{todo.deadline}]]：
-                                    {{#if deadline}} {{deadline}} {{else}} [[#{todo.notSet}]] {{/if}}
-                                </p>
-                                <p>[[#{todo.severity}]]：{{severity}}</p>
-                                {{#if parentId}}
-                                <p>[[#{todo.parent}]]：{{parentName}}</p>
-                                {{/if}}
+                                {{taskName}}
+                                [[#{todo.taskStatus}]]：{{taskStatus.statusName}}
+                                [[#{todo.memo}]]：{{memo}}
                             </option>
                             {{/each}}
                         </template>
