@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org" lang="ja">
+<head>
+    <title>sideTodoMenu</title>
+</head>
+<body>
+<div th:fragment="sideTodoMenu(taskId)" class="row flex-grow-1 flex-shrink-1 overflow-y-scroll flex-column">
+    <ul id="todoList" class="col list-group">
+        <li hx-ext="client-side-templates" hx-get="/api/todo/list" hx-trigger="load"
+             hx-target="#todoList" handlebars-array-template="TodoListTemplate">
+            <template id="TodoListTemplate">
+                {{#each todoList}}
+                {{#if (eq this.taskId "[[${taskId}]]")}}
+                <li class="card list-group-item gray">
+                {{else}}
+                <li class="card list-group-item hover-gray">
+                    <a href="/todo/detail/{{taskId}}" class="stretched-link"></a>
+                {{/if}}
+                    <div class="row">
+                        <div class="col-2">
+                            <img class="img-fluid"
+                                 src="/img/{{taskStatus.status}}.svg" alt="{{taskStatus.statusName}}"/>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <h6>{{taskName}}</h6>
+                            </div>
+                            <div class="row">
+                                <p class="text-truncate">{{memo}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {{/each}}
+            </template>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

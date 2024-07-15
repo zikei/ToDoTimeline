@@ -1,3 +1,7 @@
 .hover-gray:hover{
     background-color: #bfbfbf;
 }
+
+.gray{
+    background-color: #bfbfbf !important;
+}
