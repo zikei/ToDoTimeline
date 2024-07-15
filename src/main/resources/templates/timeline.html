@@ -19,6 +19,7 @@
     <script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
 
     <script src="/js/timeline.js"></script>
+    <script src="/js/HandlebarsHelpers.js"></script>
 </head>
 <body class="h-100 mh-100">
 <div class="d-flex flex-column h-100">
@@ -26,7 +27,7 @@
         <div th:insert="~{layout/navbar::navbar('timeline')}"></div>
     </header>
     <div class="row d-flex flex-grow-1" style="height:90%">
-        <div th:insert="~{layout/sideTodoMenu::sideTodoMenu('')}" class="col-3 d-flex flex-column h-100"></div>
+        <div th:insert="~{layout/sideTodoMenu::sideTodoMenu('tl')}" class="col-3 d-flex flex-column h-100"></div>
         <div class="col d-flex flex-column h-100">
             <div class="row flex-grow-1 flex-shrink-1 overflow-y-scroll overflow-x-hidden flex-column-reverse">
                 <ul id="timeline" class="list-group flex-column-reverse">
