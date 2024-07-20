@@ -37,7 +37,7 @@
                 <div hx-ext="sse,client-side-templates" sse-connect="/api/timeline/sse" sse-swap="message"
                      hx-swap="afterbegin" hx-target="#timeline" handlebars-template="newTlTemplate"></div>
             </div>
-            <div class="row card">
+            <div class="row card gray" style="width:99%">
                 <form hx-post="/api/timeline/post" hx-ext='json-enc' hx-trigger="submit" hx-swap="none"
                       hx-on::after-request="clearContentsTextarea()" th:object="${registerPostRequest}">
                     <div class="row">
