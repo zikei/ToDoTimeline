@@ -17,7 +17,7 @@ class TimelineServiceImpl(
     @Autowired val userRepo: UserRepository,
     @Value("\${sse.timeout}") private val sseTimeout: String
 ) : TimelineService {
-    private val timelineEmitters: MutableMap<EmitterMapKey, SseEmitter> = mutableMapOf()
+    private val timelineEmitters: MutableMap<EmitterMapKey, MutableList<SseEmitter>> = mutableMapOf()
 
     override fun getList(userId: Int): List<Timeline> {
         return tlRepo.findListByUserId(userId)
@@ -50,7 +50,12 @@ class TimelineServiceImpl(
         emitter.onCompletion { timelineEmitters.remove(key) }
         emitter.onTimeout { timelineEmitters.remove(key) }
 
-        timelineEmitters[key] = emitter
+        if(timelineEmitters[key] != null){
+            timelineEmitters[key]?.add(emitter)
+        }else{
+            timelineEmitters[key] = mutableListOf(emitter)
+        }
+
 
         return emitter
     }
@@ -60,8 +65,8 @@ class TimelineServiceImpl(
         val emitters: MutableList<SseEmitter> = mutableListOf()
 
         userIds.forEach{ userId ->
-            timelineEmitters[EmitterMapKey(userId, taskId)]?.let { emitters.add(it) }
-            taskId?.let { timelineEmitters[EmitterMapKey(userId, null)]?.let { emitters.add(it) } }
+            timelineEmitters[EmitterMapKey(userId, taskId)]?.forEach { emitters.add(it) }
+            taskId?.let { timelineEmitters[EmitterMapKey(userId, null)]?.forEach { emitters.add(it) } }
         }
 
         emitters.forEach{
