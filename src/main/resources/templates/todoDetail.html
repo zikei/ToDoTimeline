@@ -21,7 +21,7 @@
     <script src="/js/timeline.js"></script>
     <script src="/js/HandlebarsHelpers.js"></script>
 </head>
-<body class="h-100 mh-100">
+<body class="h-100 mh-100 overflow-x-hidden">
 <div class="d-flex flex-column h-100">
     <header class="row z-2" style="height:10%">
         <div th:insert="~{layout/navbar::navbar('home')}"></div>
@@ -101,7 +101,7 @@
 
                     <div class="row d-flex flex-grow-1 h-75">
                         <div class="d-flex flex-column h-100">
-                            <div class="row flex-grow-1 flex-shrink-1 overflow-y-scroll flex-column-reverse">
+                            <div class="row flex-grow-1 flex-shrink-1 overflow-y-scroll overflow-x-hidden flex-column-reverse">
                                 <ul id="timeline" class="list-group flex-column-reverse">
                                     <li hx-ext="client-side-templates" th:hx-get="|/api/timeline/list/todo/${taskId}|" hx-trigger="load"
                                         hx-target="#timeline" handlebars-array-template="TlTemplate"></li>
