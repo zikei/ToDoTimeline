@@ -14,6 +14,8 @@
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/client-side-templates.js"></script>
     <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+    <script src="/js/HandlebarsHelpers.js"></script>
 </head>
 <body class="h-100 mh-100 overflow-x-hidden">
 <div class="d-flex flex-column h-100">
@@ -77,16 +79,23 @@
                                 <option selected th:value="${ptask.taskId}" th:text="|${ptask.taskName}  #{todo.taskStatus}：${ptask.taskStatus.statusName}  #{todo.memo}：${ptask.memo}|">
                                     タスク名 状態 メモ
                                 </option>
+                                <option value=""> - </option>
                             </th:block>
                             <th:block th:if="${ptask == null}">
                                 <option value="" selected> - </option>
                             </th:block>
                             {{#each todoList}}
+                            <th:block th:if="${ptask != null}">
+                                {{#if (neq this.taskId "[[${ptask.taskId}]]")}}
+                            </th:block>
                             <option value="{{taskId}}">
                                 {{taskName}}
                                 [[#{todo.taskStatus}]]：{{taskStatus.statusName}}
                                 [[#{todo.memo}]]：{{memo}}
                             </option>
+                            <th:block th:if="${ptask != null}">
+                                {{/if}}
+                            </th:block>
                             {{/each}}
                         </template>
                     </select>
