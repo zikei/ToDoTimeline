@@ -24,7 +24,7 @@
         <h1 th:text="#{html.todo.create.title}">Todo register</h1>
     </header>
 
-    <div id="main" class="row d-flex flex-grow-1 mt-3">
+    <div id="main" class="row d-flex flex-grow-1 pt-3">
         <div class="col-1"></div>
         <div class="col">
             <form  hx-post="/api/todo/new" hx-ext='json-enc' hx-trigger="submit" th:object="${registerTaskRequest}">
