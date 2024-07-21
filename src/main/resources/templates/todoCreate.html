@@ -14,15 +14,17 @@
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/client-side-templates.js"></script>
     <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+    <script src="/js/HandlebarsHelpers.js"></script>
 </head>
-<body class="h-100 mh-100">
+<body class="h-100 mh-100 overflow-x-hidden">
 <div class="d-flex flex-column h-100">
-    <header class="row z-2" style="height:15%">
+    <header id="header" class="row z-2">
         <div th:insert="~{layout/navbar::navbar('todoCreate')}"></div>
         <h1 th:text="#{html.todo.create.title}">Todo register</h1>
     </header>
 
-    <div class="row d-flex flex-grow-1" style="height:85%">
+    <div id="main" class="row d-flex flex-grow-1 pt-3">
         <div class="col-1"></div>
         <div class="col">
             <form  hx-post="/api/todo/new" hx-ext='json-enc' hx-trigger="submit" th:object="${registerTaskRequest}">
@@ -77,16 +79,23 @@
                                 <option selected th:value="${ptask.taskId}" th:text="|${ptask.taskName}  #{todo.taskStatus}：${ptask.taskStatus.statusName}  #{todo.memo}：${ptask.memo}|">
                                     タスク名 状態 メモ
                                 </option>
+                                <option value=""> - </option>
                             </th:block>
                             <th:block th:if="${ptask == null}">
                                 <option value="" selected> - </option>
                             </th:block>
                             {{#each todoList}}
+                            <th:block th:if="${ptask != null}">
+                                {{#if (neq this.taskId "[[${ptask.taskId}]]")}}
+                            </th:block>
                             <option value="{{taskId}}">
                                 {{taskName}}
                                 [[#{todo.taskStatus}]]：{{taskStatus.statusName}}
                                 [[#{todo.memo}]]：{{memo}}
                             </option>
+                            <th:block th:if="${ptask != null}">
+                                {{/if}}
+                            </th:block>
                             {{/each}}
                         </template>
                     </select>
@@ -100,6 +109,9 @@
         <div class="col-1"></div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+<script src="/js/script.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
