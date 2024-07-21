@@ -26,7 +26,7 @@
     <header id="header" class="row z-2">
         <div th:insert="~{layout/navbar::navbar('home')}"></div>
     </header>
-    <div id="main" class="row d-flex flex-grow-1 mt-3">
+    <div id="main" class="row d-flex flex-grow-1 pt-3">
         <div th:insert="~{layout/sideTodoMenu::sideTodoMenu(${taskId})}" class="col-3 d-flex flex-column h-100"></div>
         <div id="todo_main" class="col-8 d-flex flex-column h-100">
             <h1 th:text="#{html.todo.detail.title}">ToDo</h1>
