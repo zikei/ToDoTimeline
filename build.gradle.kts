@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
 	id("org.springframework.boot") version "3.2.5"
 	id("io.spring.dependency-management") version "1.1.4"
-	id("com.thinkimi.gradle.MybatisGenerator") version "2.4"
+	id("com.qqviaja.gradle.MybatisGenerator") version "2.5"
 	kotlin("jvm") version "1.9.23"
 	kotlin("plugin.spring") version "1.9.23"
 }
@@ -36,9 +36,9 @@ dependencies {
 	implementation("org.springframework.session:spring-session-core")
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
-	implementation("org.mybatis.dynamic-sql:mybatis-dynamic-sql:1.2.1")
+	implementation("org.mybatis.dynamic-sql:mybatis-dynamic-sql:1.5.0")
 	implementation("mysql:mysql-connector-java:8.0.33")
-	mybatisGenerator("org.mybatis.generator:mybatis-generator-core:1.4.0")
+	mybatisGenerator("org.mybatis.generator:mybatis-generator-core:1.4.2")
 
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")

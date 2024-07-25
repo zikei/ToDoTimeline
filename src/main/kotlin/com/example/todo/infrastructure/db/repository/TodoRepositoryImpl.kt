@@ -10,9 +10,9 @@ import com.example.todo.infrastructure.db.mapper.custom.selectByPrimaryKey
 import com.example.todo.infrastructure.db.mapper.custom.selectByUserId
 import com.example.todo.infrastructure.db.mapper.insert
 import com.example.todo.infrastructure.db.mapper.updateByPrimaryKeySelective
-import com.example.todo.infrastructure.db.record.TaskRecord
 import com.example.todo.infrastructure.db.record.custom.TodoRecord
 import org.springframework.stereotype.Repository
+import com.example.todo.infrastructure.db.record.Task as TaskRecord
 
 @Repository
 class TodoRepositoryImpl(

@@ -5,7 +5,7 @@ package com.example.todo.infrastructure.db.record
 
 import com.example.todo.domain.enums.Role
 
-data class UserRecord(
+data class User(
     var userid: Int? = null,
     var username: String? = null,
     var dspname: String? = null,

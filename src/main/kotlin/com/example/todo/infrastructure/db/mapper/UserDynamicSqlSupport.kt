@@ -4,19 +4,32 @@
 package com.example.todo.infrastructure.db.mapper
 
 import com.example.todo.domain.enums.Role
+import org.mybatis.dynamic.sql.AliasableSqlTable
+import org.mybatis.dynamic.sql.util.kotlin.elements.column
 import java.sql.JDBCType
-import org.mybatis.dynamic.sql.SqlTable
 
 object UserDynamicSqlSupport {
-    object User : SqlTable("user") {
-        val userid = column<Int>("userId", JDBCType.INTEGER)
+    val user = User()
 
-        val username = column<String>("userName", JDBCType.VARCHAR)
+    val userid = user.userid
 
-        val dspname = column<String>("dspName", JDBCType.VARCHAR)
+    val username = user.username
 
-        val password = column<String>("password", JDBCType.VARCHAR)
+    val dspname = user.dspname
 
-        val role = column<Role>("role", JDBCType.CHAR, "org.apache.ibatis.type.EnumTypeHandler")
+    val password = user.password
+
+    val role = user.role
+
+    class User : AliasableSqlTable<User>("user", ::User) {
+        val userid = column<Int>(name = "userId", jdbcType = JDBCType.INTEGER)
+
+        val username = column<String>(name = "userName", jdbcType = JDBCType.VARCHAR)
+
+        val dspname = column<String>(name = "dspName", jdbcType = JDBCType.VARCHAR)
+
+        val password = column<String>(name = "password", jdbcType = JDBCType.VARCHAR)
+
+        val role = column<Role>(name = "role", jdbcType = JDBCType.CHAR, typeHandler = "org.apache.ibatis.type.EnumTypeHandler")
     }
 }

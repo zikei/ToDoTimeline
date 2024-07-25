@@ -3,7 +3,7 @@
  */
 package com.example.todo.infrastructure.db.record
 
-data class LogtagrRecord(
+data class Logtagr(
     var logtagrid: Int? = null,
     var logid: Int? = null,
     var logtagid: Int? = null

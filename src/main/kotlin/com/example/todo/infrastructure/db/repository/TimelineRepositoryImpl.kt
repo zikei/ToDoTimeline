@@ -9,9 +9,9 @@ import com.example.todo.infrastructure.db.mapper.custom.selectByPrimaryKey
 import com.example.todo.infrastructure.db.mapper.custom.selectByTaskId
 import com.example.todo.infrastructure.db.mapper.custom.selectByUserId
 import com.example.todo.infrastructure.db.mapper.insert
-import com.example.todo.infrastructure.db.record.ThinkinglogRecord
 import com.example.todo.infrastructure.db.record.custom.TimelineRecord
 import org.springframework.stereotype.Repository
+import com.example.todo.infrastructure.db.record.Thinkinglog as ThinkinglogRecord
 
 @Repository
 class TimelineRepositoryImpl(

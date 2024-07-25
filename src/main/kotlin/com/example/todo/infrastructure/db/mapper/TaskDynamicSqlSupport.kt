@@ -5,28 +5,49 @@ package com.example.todo.infrastructure.db.mapper
 
 import com.example.todo.domain.enums.Severity
 import com.example.todo.domain.enums.TaskStatus
+import org.mybatis.dynamic.sql.AliasableSqlTable
+import org.mybatis.dynamic.sql.util.kotlin.elements.column
 import java.sql.JDBCType
 import java.time.LocalDate
-import org.mybatis.dynamic.sql.SqlTable
 
 object TaskDynamicSqlSupport {
-    object Task : SqlTable("task") {
-        val taskid = column<Int>("taskId", JDBCType.INTEGER)
+    val task = Task()
 
-        val userid = column<Int>("userId", JDBCType.INTEGER)
+    val taskid = task.taskid
 
-        val taskname = column<String>("taskName", JDBCType.VARCHAR)
+    val userid = task.userid
 
-        val memo = column<String>("memo", JDBCType.VARCHAR)
+    val taskname = task.taskname
 
-        val createdate = column<LocalDate>("createDate", JDBCType.DATE)
+    val memo = task.memo
 
-        val severity = column<Severity>("severity", JDBCType.CHAR, "org.apache.ibatis.type.EnumTypeHandler")
+    val createdate = task.createdate
 
-        val deadline = column<LocalDate>("deadline", JDBCType.DATE)
+    val severity = task.severity
 
-        val taskstatus = column<TaskStatus>("taskStatus", JDBCType.CHAR, "org.apache.ibatis.type.EnumTypeHandler")
+    val deadline = task.deadline
 
-        val parentid = column<Int>("parentId", JDBCType.INTEGER)
+    val taskstatus = task.taskstatus
+
+    val parentid = task.parentid
+
+    class Task : AliasableSqlTable<Task>("task", ::Task) {
+        val taskid = column<Int>(name = "taskId", jdbcType = JDBCType.INTEGER)
+
+        val userid = column<Int>(name = "userId", jdbcType = JDBCType.INTEGER)
+
+        val taskname = column<String>(name = "taskName", jdbcType = JDBCType.VARCHAR)
+
+        val memo = column<String>(name = "memo", jdbcType = JDBCType.VARCHAR)
+
+        val createdate = column<LocalDate>(name = "createDate", jdbcType = JDBCType.DATE)
+
+        val severity = column<Severity>(name = "severity", jdbcType = JDBCType.CHAR, typeHandler = "org.apache.ibatis.type.EnumTypeHandler")
+
+        val deadline = column<LocalDate>(name = "deadline", jdbcType = JDBCType.DATE)
+
+        val taskstatus = column<TaskStatus>(name = "taskStatus", jdbcType = JDBCType.CHAR, typeHandler = "org.apache.ibatis.type.EnumTypeHandler")
+
+        val parentid = column<Int>(name = "parentId", jdbcType = JDBCType.INTEGER)
     }
 }

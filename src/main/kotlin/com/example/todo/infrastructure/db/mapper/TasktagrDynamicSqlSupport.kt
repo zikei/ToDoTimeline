@@ -3,15 +3,24 @@
  */
 package com.example.todo.infrastructure.db.mapper
 
+import org.mybatis.dynamic.sql.AliasableSqlTable
+import org.mybatis.dynamic.sql.util.kotlin.elements.column
 import java.sql.JDBCType
-import org.mybatis.dynamic.sql.SqlTable
 
 object TasktagrDynamicSqlSupport {
-    object Tasktagr : SqlTable("tasktagR") {
-        val tasktagrid = column<Int>("tasktagRId", JDBCType.INTEGER)
+    val tasktagr = Tasktagr()
 
-        val taskid = column<Int>("taskId", JDBCType.INTEGER)
+    val tasktagrid = tasktagr.tasktagrid
 
-        val tasktagid = column<Int>("tasktagId", JDBCType.INTEGER)
+    val taskid = tasktagr.taskid
+
+    val tasktagid = tasktagr.tasktagid
+
+    class Tasktagr : AliasableSqlTable<Tasktagr>("tasktagR", ::Tasktagr) {
+        val tasktagrid = column<Int>(name = "tasktagRId", jdbcType = JDBCType.INTEGER)
+
+        val taskid = column<Int>(name = "taskId", jdbcType = JDBCType.INTEGER)
+
+        val tasktagid = column<Int>(name = "tasktagId", jdbcType = JDBCType.INTEGER)
     }
 }

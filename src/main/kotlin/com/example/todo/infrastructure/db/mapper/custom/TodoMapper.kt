@@ -1,15 +1,16 @@
 package com.example.todo.infrastructure.db.mapper.custom
 
 import com.example.todo.infrastructure.db.record.custom.TodoRecord
-import org.apache.ibatis.annotations.Mapper
-import org.apache.ibatis.annotations.Result
-import org.apache.ibatis.annotations.ResultMap
-import org.apache.ibatis.annotations.Results
-import org.apache.ibatis.annotations.SelectProvider
+import org.apache.ibatis.annotations.*
 import org.apache.ibatis.type.EnumTypeHandler
 import org.apache.ibatis.type.JdbcType
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter
+import org.mybatis.dynamic.sql.util.kotlin.mybatis3.select
+import com.example.todo.infrastructure.db.mapper.TaskDynamicSqlSupport as Task
+import com.example.todo.infrastructure.db.mapper.TaskDynamicSqlSupport.task as taskTable
+import com.example.todo.infrastructure.db.mapper.custom.ParentTaskDynamicSqlSupport as PTask
+import com.example.todo.infrastructure.db.mapper.custom.ParentTaskDynamicSqlSupport.ptask as ptaskTable
 
 @Mapper
 interface TodoMapper {
@@ -40,4 +41,57 @@ interface TodoMapper {
     @SelectProvider(type = SqlProviderAdapter::class, method = "select")
     @ResultMap("TodoRecordResult")
     fun selectOne(selectStatement: SelectStatementProvider) : TodoRecord?
+}
+
+private val columnList = listOf(
+    Task.taskid,
+    Task.userid,
+    Task.taskname,
+    Task.memo,
+    Task.createdate,
+    Task.severity,
+    Task.deadline,
+    Task.taskstatus,
+
+    PTask.ptaskid,
+    PTask.puserid,
+    PTask.ptaskname,
+    PTask.pmemo,
+    PTask.pcreatedate,
+    PTask.pseverity,
+    PTask.pdeadline,
+    PTask.ptaskstatus
+
+)
+
+fun TodoMapper.select(): List<TodoRecord> {
+    val selectStatement = select(columnList){
+        from(taskTable)
+        leftJoin(ptaskTable, "ptask") {
+            on(Task.parentid) equalTo(PTask.ptaskid)
+        }
+    }
+    return selectMany(selectStatement)
+}
+
+fun TodoMapper.selectByUserId(id : Int): List<TodoRecord>{
+    val selectStatement = select(columnList){
+        from(taskTable)
+        leftJoin(ptaskTable, "ptask") {
+            on(Task.parentid) equalTo(PTask.ptaskid)
+        }
+        where { Task.userid isEqualTo id }
+    }
+    return selectMany(selectStatement)
+}
+
+fun TodoMapper.selectByPrimaryKey(id: Int): TodoRecord? {
+    val selectStatement = select(columnList){
+        from(taskTable)
+        leftJoin(ptaskTable, "ptask") {
+            on(Task.parentid) equalTo(PTask.ptaskid)
+        }
+        where { Task.taskid isEqualTo id }
+    }
+    return selectOne(selectStatement)
 }

@@ -3,16 +3,25 @@
  */
 package com.example.todo.infrastructure.db.mapper
 
+import org.mybatis.dynamic.sql.AliasableSqlTable
+import org.mybatis.dynamic.sql.util.kotlin.elements.column
 import java.sql.JDBCType
 import java.time.LocalDateTime
-import org.mybatis.dynamic.sql.SqlTable
 
 object NewsDynamicSqlSupport {
-    object News : SqlTable("news") {
-        val newsid = column<Int>("newsId", JDBCType.INTEGER)
+    val news = News()
 
-        val contents = column<String>("contents", JDBCType.VARCHAR)
+    val newsid = news.newsid
 
-        val createdate = column<LocalDateTime>("createDate", JDBCType.TIMESTAMP)
+    val contents = news.contents
+
+    val createdate = news.createdate
+
+    class News : AliasableSqlTable<News>("news", ::News) {
+        val newsid = column<Int>(name = "newsId", jdbcType = JDBCType.INTEGER)
+
+        val contents = column<String>(name = "contents", jdbcType = JDBCType.VARCHAR)
+
+        val createdate = column<LocalDateTime>(name = "createDate", jdbcType = JDBCType.TIMESTAMP)
     }
 }

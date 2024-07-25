@@ -3,12 +3,11 @@
  */
 package com.example.todo.infrastructure.db.record
 
-import java.time.LocalDateTime
+import com.example.todo.domain.enums.MenStatus
 
-data class ThinkinglogRecord(
-    var logid: Int? = null,
+data class Member(
+    var menid: Int? = null,
     var taskid: Int? = null,
     var userid: Int? = null,
-    var createdate: LocalDateTime? = null,
-    var contents: String? = null
+    var menstatus: MenStatus? = null
 )
