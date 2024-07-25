@@ -12,6 +12,7 @@ import com.example.todo.infrastructure.db.mapper.ThinkinglogDynamicSqlSupport.us
 import com.example.todo.infrastructure.db.record.Thinkinglog
 import org.apache.ibatis.annotations.*
 import org.apache.ibatis.type.JdbcType
+import org.mybatis.dynamic.sql.insert.render.InsertStatementProvider
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter
 import org.mybatis.dynamic.sql.util.kotlin.*
@@ -36,6 +37,10 @@ interface ThinkinglogMapper : CommonCountMapper, CommonDeleteMapper, CommonInser
     @SelectProvider(type=SqlProviderAdapter::class, method="select")
     @ResultMap("ThinkinglogResult")
     fun selectOne(selectStatement: SelectStatementProvider): Thinkinglog?
+
+    @InsertProvider(type=SqlProviderAdapter::class, method="insert")
+    @Options(useGeneratedKeys = true, keyColumn = "logId", keyProperty = "row.logid")
+    override fun insert(insertStatement: InsertStatementProvider<Thinkinglog>): Int
 }
 
 fun ThinkinglogMapper.count(completer: CountCompleter) =

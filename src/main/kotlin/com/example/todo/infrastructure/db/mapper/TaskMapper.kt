@@ -17,6 +17,7 @@ import com.example.todo.infrastructure.db.record.Task
 import org.apache.ibatis.annotations.*
 import org.apache.ibatis.type.EnumTypeHandler
 import org.apache.ibatis.type.JdbcType
+import org.mybatis.dynamic.sql.insert.render.InsertStatementProvider
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter
 import org.mybatis.dynamic.sql.util.kotlin.*
@@ -45,6 +46,10 @@ interface TaskMapper : CommonCountMapper, CommonDeleteMapper, CommonInsertMapper
     @SelectProvider(type=SqlProviderAdapter::class, method="select")
     @ResultMap("TaskResult")
     fun selectOne(selectStatement: SelectStatementProvider): Task?
+
+    @InsertProvider(type=SqlProviderAdapter::class, method="insert")
+    @Options(useGeneratedKeys = true, keyColumn = "taskId", keyProperty = "row.taskid")
+    override fun insert(insertStatement: InsertStatementProvider<Task>): Int
 }
 
 fun TaskMapper.count(completer: CountCompleter) =
