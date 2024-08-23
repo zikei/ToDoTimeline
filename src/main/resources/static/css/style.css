@@ -11,3 +11,11 @@
     background-position: center;
     background-size: cover;
 }
+
+.ta-size-auto{
+    field-sizing: content;
+}
+
+.ta-size-max-5{
+    max-height: 5lh;
+}
