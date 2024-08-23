@@ -5,3 +5,9 @@
 .gray{
     background-color: #bfbfbf !important;
 }
+
+.bg-logo{
+    background-image: url("/img/logo-w.png");
+    background-position: center;
+    background-size: cover;
+}
