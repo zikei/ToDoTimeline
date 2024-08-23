@@ -1,9 +1,11 @@
 package com.example.todo.infrastructure.db.mapper.custom
 
+import com.example.todo.domain.enums.TaskStatus
 import com.example.todo.infrastructure.db.record.custom.TodoRecord
 import org.apache.ibatis.annotations.*
 import org.apache.ibatis.type.EnumTypeHandler
 import org.apache.ibatis.type.JdbcType
+import org.mybatis.dynamic.sql.SqlBuilder.sortColumn
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter
 import org.mybatis.dynamic.sql.util.kotlin.mybatis3.select
@@ -76,11 +78,16 @@ fun TodoMapper.select(): List<TodoRecord> {
 
 fun TodoMapper.selectByUserId(id : Int): List<TodoRecord>{
     val selectStatement = select(columnList){
-        from(taskTable)
+        from(taskTable, "task")
         leftJoin(ptaskTable, "ptask") {
             on(Task.parentid) equalTo(PTask.ptaskid)
         }
         where { Task.userid isEqualTo id }
+        orderBy(sortColumn("CASE " +
+                "WHEN task.taskstatus = '${TaskStatus.open.status}' THEN ${TaskStatus.open.weight} " +
+                "WHEN task.taskstatus = '${TaskStatus.closed.status}' THEN ${TaskStatus.closed.weight} " +
+                "WHEN task.taskstatus = '${TaskStatus.cancel.status}' THEN ${TaskStatus.cancel.weight} " +
+                "ELSE 10 END").descending())
     }
     return selectMany(selectStatement)
 }
