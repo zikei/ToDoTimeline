@@ -3,7 +3,7 @@
  */
 package com.example.todo.infrastructure.db.record
 
-data class TageventRecord(
+data class Tagevent(
     var tageventid: Int? = null,
     var eventname: String? = null,
     var eventoutline: String? = null

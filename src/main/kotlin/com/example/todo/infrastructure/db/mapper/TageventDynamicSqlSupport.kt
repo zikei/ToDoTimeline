@@ -3,15 +3,24 @@
  */
 package com.example.todo.infrastructure.db.mapper
 
+import org.mybatis.dynamic.sql.AliasableSqlTable
+import org.mybatis.dynamic.sql.util.kotlin.elements.column
 import java.sql.JDBCType
-import org.mybatis.dynamic.sql.SqlTable
 
 object TageventDynamicSqlSupport {
-    object Tagevent : SqlTable("tagEvent") {
-        val tageventid = column<Int>("tagEventId", JDBCType.INTEGER)
+    val tagevent = Tagevent()
 
-        val eventname = column<String>("eventName", JDBCType.VARCHAR)
+    val tageventid = tagevent.tageventid
 
-        val eventoutline = column<String>("eventOutline", JDBCType.VARCHAR)
+    val eventname = tagevent.eventname
+
+    val eventoutline = tagevent.eventoutline
+
+    class Tagevent : AliasableSqlTable<Tagevent>("tagEvent", ::Tagevent) {
+        val tageventid = column<Int>(name = "tagEventId", jdbcType = JDBCType.INTEGER)
+
+        val eventname = column<String>(name = "eventName", jdbcType = JDBCType.VARCHAR)
+
+        val eventoutline = column<String>(name = "eventOutline", jdbcType = JDBCType.VARCHAR)
     }
 }

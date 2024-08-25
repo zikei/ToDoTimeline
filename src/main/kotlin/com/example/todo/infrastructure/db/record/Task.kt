@@ -7,7 +7,7 @@ import com.example.todo.domain.enums.Severity
 import com.example.todo.domain.enums.TaskStatus
 import java.time.LocalDate
 
-data class TaskRecord(
+data class Task(
     var taskid: Int? = null,
     var userid: Int? = null,
     var taskname: String? = null,

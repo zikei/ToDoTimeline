@@ -4,17 +4,28 @@
 package com.example.todo.infrastructure.db.mapper
 
 import com.example.todo.domain.enums.MenStatus
+import org.mybatis.dynamic.sql.AliasableSqlTable
+import org.mybatis.dynamic.sql.util.kotlin.elements.column
 import java.sql.JDBCType
-import org.mybatis.dynamic.sql.SqlTable
 
 object MemberDynamicSqlSupport {
-    object Member : SqlTable("member") {
-        val menid = column<Int>("menId", JDBCType.INTEGER)
+    val member = Member()
 
-        val taskid = column<Int>("taskId", JDBCType.INTEGER)
+    val menid = member.menid
 
-        val userid = column<Int>("userId", JDBCType.INTEGER)
+    val taskid = member.taskid
 
-        val menstatus = column<MenStatus>("menStatus", JDBCType.CHAR, "org.apache.ibatis.type.EnumTypeHandler")
+    val userid = member.userid
+
+    val menstatus = member.menstatus
+
+    class Member : AliasableSqlTable<Member>("member", ::Member) {
+        val menid = column<Int>(name = "menId", jdbcType = JDBCType.INTEGER)
+
+        val taskid = column<Int>(name = "taskId", jdbcType = JDBCType.INTEGER)
+
+        val userid = column<Int>(name = "userId", jdbcType = JDBCType.INTEGER)
+
+        val menstatus = column<MenStatus>(name = "menStatus", jdbcType = JDBCType.CHAR, typeHandler = "org.apache.ibatis.type.EnumTypeHandler")
     }
 }

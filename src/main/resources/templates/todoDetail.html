@@ -115,7 +115,7 @@
                                     <div class="row">
                                         <input type="hidden" th:field="*{taskid}">
                                         <div class="col-10">
-                                <textarea class="form-control" id="contentsForm" th:field="*{contents}"
+                                <textarea class="form-control ta-size-auto ta-size-max-5" id="contentsForm" th:field="*{contents}"
                                           minlength="1" maxlength="500" required rows="1"></textarea>
                                         </div>
                                         <div class="col-2">
@@ -138,7 +138,14 @@
 <template id="TodoTemplate">
     {{#if todo}}
     {{#todo}}
-    <h1>{{taskName}}</h1>
+    <div class="row">
+        <div class="col">
+            <h1>{{taskName}}</h1>
+        </div>
+        <div class="col text-end">
+            <a href="/todo/new?pid={{taskId}}" class="btn btn-primary" th:text="#{html.todo.create.title}">新規TODO</a>
+        </div>
+    </div>
     <div class="card">
         <div class="row">
             <div class="col-1">

@@ -3,8 +3,9 @@
  */
 package com.example.todo.infrastructure.db.record
 
-data class TasktagRecord(
-    var tasktagid: Int? = null,
+data class Logtag(
+    var logtagid: Int? = null,
     var tagname: String? = null,
-    var userid: Int? = null
+    var userid: Int? = null,
+    var tageventid: Int? = null
 )

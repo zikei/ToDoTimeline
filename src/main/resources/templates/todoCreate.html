@@ -6,6 +6,8 @@
 
     <link rel="icon" href="/img/favicon.ico">
 
+    <link rel="stylesheet" href="/css/style.css">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
@@ -26,85 +28,87 @@
 
     <div id="main" class="row d-flex flex-grow-1 pt-3">
         <div class="col-1"></div>
-        <div class="col">
-            <form  hx-post="/api/todo/new" hx-ext='json-enc' hx-trigger="submit" th:object="${registerTaskRequest}">
-                <div class="g-3">
-                    <label class="form-label" for="taskName">
-                        <span th:text="#{RegisterTaskRequest.taskName}">タスク名</span>:
-                        <span class="badge text-bg-danger" th:text="#{html.form.required}">必須</span>
-                    </label>
-                    <input type="text" class="form-control is-valid" id="taskName" th:field="*{taskName}"
-                           required minlength="2" maxlength="100">
-                    <div class="form-text" th:text="#{RegisterTaskRequest.validation.taskName}">
-                        タスク名は２文字以上
+        <div class="col d-flex flex-column h-100">
+            <div class="overflow-y-scroll">
+                <form  hx-post="/api/todo/new" hx-ext='json-enc' hx-trigger="submit" th:object="${registerTaskRequest}">
+                    <div class="g-3">
+                        <label class="form-label" for="taskName">
+                            <span th:text="#{RegisterTaskRequest.taskName}">タスク名</span>:
+                            <span class="badge text-bg-danger" th:text="#{html.form.required}">必須</span>
+                        </label>
+                        <input type="text" class="form-control is-valid" id="taskName" th:field="*{taskName}"
+                               required minlength="2" maxlength="100">
+                        <div class="form-text" th:text="#{RegisterTaskRequest.validation.taskName}">
+                            タスク名は２文字以上
+                        </div>
                     </div>
-                </div>
-                <div class="g-3">
-                    <label class="form-label" for="memo">
-                        <span th:text="#{RegisterTaskRequest.memo}">メモ</span>:
-                        <span class="badge text-bg-info" th:text="#{html.form.option}">任意</span>
-                    </label>
-                    <textarea class="form-control" id="memo" th:field="*{memo}"
-                              maxlength="500"></textarea>
-                </div>
-                <div class="g-3">
-                    <label class="form-label" for="severity">
-                        <span th:text="#{RegisterTaskRequest.severity}">重要度</span>:
-                        <span class="badge text-bg-danger" th:text="#{html.form.required}">必須</span>
-                    </label>
-                    <select class="form-control" id="severity" th:field="*{severity}"
-                            required>
-                        <th:block th:each="severity : ${severityList}">
-                            <option th:value="${severity.severity}">[[${severity.severityName}]]</option>
-                        </th:block>
-                    </select>
-                </div>
-                <div class="g-3">
-                    <label class="form-label" for="deadline">
-                        <span th:text="#{RegisterTaskRequest.deadline}">締切</span>:
-                        <span class="badge text-bg-info" th:text="#{html.form.option}">任意</span>
-                    </label>
-                    <input type="date" class="form-control" id="deadline" th:field="*{deadline}">
-                </div>
-                <div class="g-3">
-                    <label class="form-label" for="parentId">
-                        <span th:text="#{RegisterTaskRequest.parentId}">親タスク</span>:
-                        <span class="badge text-bg-info" th:text="#{html.form.option}">任意</span>
-                    </label>
-                    <select class="form-control" id="parentId" th:field="*{parentId}" hx-ext="client-side-templates"
-                            hx-get="/api/todo/list" hx-trigger="load"
-                            hx-target="#parentId" handlebars-array-template="OptTodoListTemplate">
-                        <template id="OptTodoListTemplate">
-                            <th:block th:if="${ptask != null}">
-                                <option selected th:value="${ptask.taskId}" th:text="|${ptask.taskName}  #{todo.taskStatus}：${ptask.taskStatus.statusName}  #{todo.memo}：${ptask.memo}|">
-                                    タスク名 状態 メモ
+                    <div class="g-3">
+                        <label class="form-label" for="memo">
+                            <span th:text="#{RegisterTaskRequest.memo}">メモ</span>:
+                            <span class="badge text-bg-info" th:text="#{html.form.option}">任意</span>
+                        </label>
+                        <textarea class="form-control ta-size-auto" id="memo" th:field="*{memo}"
+                                  maxlength="500"></textarea>
+                    </div>
+                    <div class="g-3">
+                        <label class="form-label" for="severity">
+                            <span th:text="#{RegisterTaskRequest.severity}">重要度</span>:
+                            <span class="badge text-bg-danger" th:text="#{html.form.required}">必須</span>
+                        </label>
+                        <select class="form-control" id="severity" th:field="*{severity}"
+                                required>
+                            <th:block th:each="severity : ${severityList}">
+                                <option th:value="${severity.severity}">[[${severity.severityName}]]</option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="g-3">
+                        <label class="form-label" for="deadline">
+                            <span th:text="#{RegisterTaskRequest.deadline}">締切</span>:
+                            <span class="badge text-bg-info" th:text="#{html.form.option}">任意</span>
+                        </label>
+                        <input type="date" class="form-control" id="deadline" th:field="*{deadline}">
+                    </div>
+                    <div class="g-3">
+                        <label class="form-label" for="parentId">
+                            <span th:text="#{RegisterTaskRequest.parentId}">親タスク</span>:
+                            <span class="badge text-bg-info" th:text="#{html.form.option}">任意</span>
+                        </label>
+                        <select class="form-control" id="parentId" th:field="*{parentId}" hx-ext="client-side-templates"
+                                hx-get="/api/todo/list" hx-trigger="load"
+                                hx-target="#parentId" handlebars-array-template="OptTodoListTemplate">
+                            <template id="OptTodoListTemplate">
+                                <th:block th:if="${ptask != null}">
+                                    <option selected th:value="${ptask.taskId}" th:text="|${ptask.taskName}  #{todo.taskStatus}：${ptask.taskStatus.statusName}  #{todo.memo}：${ptask.memo}|">
+                                        タスク名 状態 メモ
+                                    </option>
+                                    <option value=""> - </option>
+                                </th:block>
+                                <th:block th:if="${ptask == null}">
+                                    <option value="" selected> - </option>
+                                </th:block>
+                                {{#each todoList}}
+                                <th:block th:if="${ptask != null}">
+                                    {{#if (neq this.taskId "[[${ptask.taskId}]]")}}
+                                </th:block>
+                                <option value="{{taskId}}">
+                                    {{taskName}}
+                                    [[#{todo.taskStatus}]]：{{taskStatus.statusName}}
+                                    [[#{todo.memo}]]：{{memo}}
                                 </option>
-                                <option value=""> - </option>
-                            </th:block>
-                            <th:block th:if="${ptask == null}">
-                                <option value="" selected> - </option>
-                            </th:block>
-                            {{#each todoList}}
-                            <th:block th:if="${ptask != null}">
-                                {{#if (neq this.taskId "[[${ptask.taskId}]]")}}
-                            </th:block>
-                            <option value="{{taskId}}">
-                                {{taskName}}
-                                [[#{todo.taskStatus}]]：{{taskStatus.statusName}}
-                                [[#{todo.memo}]]：{{memo}}
-                            </option>
-                            <th:block th:if="${ptask != null}">
-                                {{/if}}
-                            </th:block>
-                            {{/each}}
-                        </template>
-                    </select>
-                </div>
-                <div class="g-3">
-                    <button type="submit" class="btn btn-primary" th:text="#{html.todo.create.submit}">ToDo作成</button>
-                </div>
+                                <th:block th:if="${ptask != null}">
+                                    {{/if}}
+                                </th:block>
+                                {{/each}}
+                            </template>
+                        </select>
+                    </div>
+                    <div class="g-3">
+                        <button type="submit" class="btn btn-primary" th:text="#{html.todo.create.submit}">ToDo作成</button>
+                    </div>
 
-            </form>
+                </form>
+            </div>
         </div>
         <div class="col-1"></div>
     </div>

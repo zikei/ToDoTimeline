@@ -3,13 +3,17 @@ package com.example.todo.infrastructure.db.repository
 import com.example.todo.domain.enums.MenStatus
 import com.example.todo.domain.model.User
 import com.example.todo.domain.repository.UserRepository
-import com.example.todo.infrastructure.db.mapper.*
-import com.example.todo.infrastructure.db.mapper.MemberDynamicSqlSupport.Member
-import com.example.todo.infrastructure.db.mapper.TaskDynamicSqlSupport.Task
-import com.example.todo.infrastructure.db.record.UserRecord
-import org.mybatis.dynamic.sql.SqlBuilder.equalTo
-import org.mybatis.dynamic.sql.SqlBuilder.isEqualTo
+import com.example.todo.infrastructure.db.mapper.UserMapper
+import com.example.todo.infrastructure.db.mapper.selectByPrimaryKey
+import com.example.todo.infrastructure.db.mapper.selectDistinct
+import com.example.todo.infrastructure.db.mapper.selectOne
 import org.springframework.stereotype.Repository
+import com.example.todo.infrastructure.db.mapper.MemberDynamicSqlSupport as MemberSql
+import com.example.todo.infrastructure.db.mapper.MemberDynamicSqlSupport.member as MemberTable
+import com.example.todo.infrastructure.db.mapper.TaskDynamicSqlSupport as TaskSql
+import com.example.todo.infrastructure.db.mapper.TaskDynamicSqlSupport.task as taskTable
+import com.example.todo.infrastructure.db.mapper.UserDynamicSqlSupport as UserSql
+import com.example.todo.infrastructure.db.record.User as UserRecord
 
 @Repository
 class UserRepositoryImpl(
@@ -23,28 +27,30 @@ class UserRepositoryImpl(
 
     override fun findByUserName(name: String): User? {
         val record = mapper.selectOne{
-            where(UserDynamicSqlSupport.User.username, isEqualTo(name))
+            where{ UserSql.username isEqualTo name }
         }
         return record?.let { toModel(it) }
     }
 
     override fun findByTaskId(taskId: Int): List<User> {
-        val records = mapper.selectDistinct {
-            leftJoin(Task) {
-                on(UserDynamicSqlSupport.User.userid, equalTo(Task.userid))
+        val record = mapper.selectDistinct {
+            leftJoin(taskTable) {
+                on(UserSql.userid) equalTo TaskSql.userid
             }
-            where(Task.taskid, isEqualTo(taskId))
-        }.toMutableList()
-
-        records += mapper.selectDistinct {
-            leftJoin(Member){
-                on(UserDynamicSqlSupport.User.userid, equalTo(Member.userid))
+            leftJoin(MemberTable){
+                on(UserSql.userid) equalTo MemberSql.userid
             }
-            where(Member.taskid, isEqualTo(taskId))
-                .and(Member.menstatus, isEqualTo(MenStatus.member))
-        }.toMutableList()
-
-        return records.map { toModel(it) }.distinct()
+            where {
+                TaskSql.taskid isEqualTo taskId
+                or{
+                    MemberSql.taskid isEqualTo taskId
+                    and{
+                        MemberSql.menstatus isEqualTo MenStatus.member
+                    }
+                }
+            }
+        }
+        return record.map { toModel(it) }
     }
 
     private fun toModel(record: UserRecord): User {

@@ -3,20 +3,33 @@
  */
 package com.example.todo.infrastructure.db.mapper
 
+import org.mybatis.dynamic.sql.AliasableSqlTable
+import org.mybatis.dynamic.sql.util.kotlin.elements.column
 import java.sql.JDBCType
 import java.time.LocalDateTime
-import org.mybatis.dynamic.sql.SqlTable
 
 object ThinkinglogDynamicSqlSupport {
-    object Thinkinglog : SqlTable("thinkingLog") {
-        val logid = column<Int>("logId", JDBCType.INTEGER)
+    val thinkinglog = Thinkinglog()
 
-        val taskid = column<Int>("taskId", JDBCType.INTEGER)
+    val logid = thinkinglog.logid
 
-        val userid = column<Int>("userId", JDBCType.INTEGER)
+    val taskid = thinkinglog.taskid
 
-        val createdate = column<LocalDateTime>("createDate", JDBCType.TIMESTAMP)
+    val userid = thinkinglog.userid
 
-        val contents = column<String>("contents", JDBCType.VARCHAR)
+    val createdate = thinkinglog.createdate
+
+    val contents = thinkinglog.contents
+
+    class Thinkinglog : AliasableSqlTable<Thinkinglog>("thinkingLog", ::Thinkinglog) {
+        val logid = column<Int>(name = "logId", jdbcType = JDBCType.INTEGER)
+
+        val taskid = column<Int>(name = "taskId", jdbcType = JDBCType.INTEGER)
+
+        val userid = column<Int>(name = "userId", jdbcType = JDBCType.INTEGER)
+
+        val createdate = column<LocalDateTime>(name = "createDate", jdbcType = JDBCType.TIMESTAMP)
+
+        val contents = column<String>(name = "contents", jdbcType = JDBCType.VARCHAR)
     }
 }
