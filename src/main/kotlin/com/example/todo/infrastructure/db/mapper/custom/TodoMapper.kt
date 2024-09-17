@@ -55,14 +55,14 @@ private val columnList = listOf(
     Task.deadline,
     Task.taskstatus,
 
-    PTask.ptaskid,
-    PTask.puserid,
-    PTask.ptaskname,
-    PTask.pmemo,
-    PTask.pcreatedate,
-    PTask.pseverity,
-    PTask.pdeadline,
-    PTask.ptaskstatus
+    PTask.ptaskid.`as`("ptaskid"),
+    PTask.puserid.`as`("puserid"),
+    PTask.ptaskname.`as`("ptaskname"),
+    PTask.pmemo.`as`("pmemo"),
+    PTask.pcreatedate.`as`("pcreatedate"),
+    PTask.pseverity.`as`("pseverity"),
+    PTask.pdeadline.`as`("pdeadline"),
+    PTask.ptaskstatus.`as`("ptaskstatus")
 
 )
 
