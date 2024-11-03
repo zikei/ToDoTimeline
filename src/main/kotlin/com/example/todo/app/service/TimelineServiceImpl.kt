@@ -5,6 +5,7 @@ import com.example.todo.domain.model.Timeline
 import com.example.todo.domain.repository.TimelineRepository
 import com.example.todo.domain.repository.UserRepository
 import com.example.todo.domain.service.TimelineService
+import com.example.todo.ui.form.GetTlListResponse
 import com.example.todo.ui.form.TlInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -56,6 +57,13 @@ class TimelineServiceImpl(
             timelineEmitters[key] = mutableListOf(emitter)
         }
 
+        val msg = if(taskId == null){
+            GetTlListResponse(getList(userId).map { TlInfo(it) })
+        }else{
+            GetTlListResponse(getListByTask(taskId).map { TlInfo(it) })
+        }
+
+        emitter.send(SseEmitter.event().name("init").data(msg))
 
         return emitter
     }
@@ -70,7 +78,7 @@ class TimelineServiceImpl(
         }
 
         emitters.forEach{
-            it.send(SseEmitter.event().data(msg))
+            it.send(SseEmitter.event().name("new").data(msg))
         }
     }
 

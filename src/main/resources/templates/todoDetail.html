@@ -106,8 +106,10 @@
                                     <li hx-ext="client-side-templates" th:hx-get="|/api/timeline/list/todo/${taskId}|" hx-trigger="load"
                                         hx-target="#timeline" handlebars-array-template="TlTemplate"></li>
                                 </ul>
-                                <div hx-ext="sse,client-side-templates" th:sse-connect="|/api/timeline/sse?taskId=${taskId}|" sse-swap="message"
-                                     hx-swap="afterbegin" hx-target="#timeline" handlebars-template="newTlTemplate"></div>
+                                <div hx-ext="sse,client-side-templates" th:sse-connect="|/api/timeline/sse?taskId=${taskId}|">
+                                    <div sse-swap="init" hx-swap="afterbegin" hx-target="#timeline" handlebars-array-template="TlTemplate"></div>
+                                    <div sse-swap="new" hx-swap="afterbegin" hx-target="#timeline" handlebars-template="newTlTemplate"></div>
+                                </div>
                             </div>
                             <div class="row card gray">
                                 <form hx-post="/api/timeline/post" hx-ext='json-enc' hx-trigger="submit" hx-swap="none"

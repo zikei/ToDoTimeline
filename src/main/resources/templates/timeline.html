@@ -36,8 +36,10 @@
                     <li hx-ext="client-side-templates" hx-get="/api/timeline/list" hx-trigger="load"
                         hx-target="#timeline" handlebars-array-template="TlTemplate"></li>
                 </ul>
-                <div hx-ext="sse,client-side-templates" sse-connect="/api/timeline/sse" sse-swap="message"
-                     hx-swap="afterbegin" hx-target="#timeline" handlebars-template="newTlTemplate"></div>
+                <div hx-ext="sse,client-side-templates" sse-connect="/api/timeline/sse">
+                    <div sse-swap="init" hx-swap="afterbegin" hx-target="#timeline" handlebars-array-template="TlTemplate"></div>
+                    <div sse-swap="new" hx-swap="afterbegin" hx-target="#timeline" handlebars-template="newTlTemplate"></div>
+                </div>
             </div>
             <div class="row card gray" style="width:99%">
                 <form hx-post="/api/timeline/post" hx-ext='json-enc' hx-trigger="submit" hx-swap="none"
